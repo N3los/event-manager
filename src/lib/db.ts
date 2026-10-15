@@ -656,3 +656,73 @@ export async function reopenEvent(): Promise<EventMeta> {
   saveLocalStore(store);
   return store.meta;
 }
+
+/**
+ * Diagnostic status for database verification
+ */
+export async function getDatabaseStatus(): Promise<{
+  backend: 'neon-postgres' | 'local-store';
+  isNeonConfigured: boolean;
+  detectedEnvVar: string | null;
+  neonHost: string | null;
+  dbName?: string;
+  serverTime?: string;
+  pgVersion?: string;
+  guestCount: number;
+  isWritable: boolean;
+  error?: string;
+}> {
+  let detectedEnvVar: string | null = null;
+  if (process.env.DATABASE_URL) detectedEnvVar = 'DATABASE_URL';
+  else if (process.env.DATABASE_URL_UNPOOLED) detectedEnvVar = 'DATABASE_URL_UNPOOLED';
+  else if (process.env.POSTGRES_URL) detectedEnvVar = 'POSTGRES_URL';
+  else if (process.env.POSTGRES_PRISMA_URL) detectedEnvVar = 'POSTGRES_PRISMA_URL';
+  else if (process.env.NEON_DATABASE_URL) detectedEnvVar = 'NEON_DATABASE_URL';
+
+  let neonHost: string | null = null;
+  if (connectionString) {
+    try {
+      const u = new URL(connectionString);
+      neonHost = u.host;
+    } catch {}
+  }
+
+  if (pool) {
+    try {
+      await initDb();
+      const res = await pool.query('SELECT NOW() as db_time, current_database() as db_name, version() as pg_version');
+      const countRes = await pool.query('SELECT count(*)::int as count FROM guests');
+      return {
+        backend: 'neon-postgres',
+        isNeonConfigured: true,
+        detectedEnvVar,
+        neonHost,
+        dbName: res.rows[0]?.db_name,
+        serverTime: res.rows[0]?.db_time ? new Date(res.rows[0].db_time).toISOString() : undefined,
+        pgVersion: res.rows[0]?.pg_version,
+        guestCount: countRes.rows[0]?.count || 0,
+        isWritable: true,
+      };
+    } catch (err: any) {
+      return {
+        backend: 'local-store',
+        isNeonConfigured: true,
+        detectedEnvVar,
+        neonHost,
+        guestCount: getLocalStore().guests.length,
+        isWritable: true,
+        error: err.message,
+      };
+    }
+  }
+
+  return {
+    backend: 'local-store',
+    isNeonConfigured: false,
+    detectedEnvVar: null,
+    neonHost: null,
+    guestCount: getLocalStore().guests.length,
+    isWritable: true,
+  };
+}
+
