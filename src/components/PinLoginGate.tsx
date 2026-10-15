@@ -77,28 +77,37 @@ export function PinLoginGate({ onAuthenticated }: PinLoginGateProps) {
   }, [handleDigit, handleDelete]);
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-50 flex flex-col items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 bg-slate-50 flex flex-col items-center justify-center p-4 overflow-y-auto">
       {/* Background ambient lighting */}
       <div className="absolute top-1/4 w-96 h-96 bg-[#013695]/5 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-1/4 w-72 h-72 bg-[#FC661B]/5 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="w-full max-w-xs bg-white rounded-3xl border border-slate-200/90 shadow-2xl shadow-slate-300/50 p-6 relative z-10 flex flex-col items-center text-center space-y-6">
+      <div className="w-full max-w-sm bg-white rounded-3xl border border-slate-200/90 shadow-2xl shadow-slate-300/50 p-6 sm:p-7 relative z-10 flex flex-col items-center text-center space-y-5 my-auto">
         
-        {/* Brand Icon & Heading */}
-        <div className="space-y-3">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#013695] to-[#024ec4] shadow-xl shadow-[#013695]/25 flex items-center justify-center mx-auto ring-4 ring-[#013695]/10">
-            <Sparkles className="w-8 h-8 text-[#FC661B]" />
+        {/* Brand Logos: FURT -> POOR DECISIONS -> Prompt */}
+        <div className="space-y-3 flex flex-col items-center w-full">
+          {/* 1. FURT Logo */}
+          <div className="flex items-center justify-center w-full px-2">
+            <img
+              src="/FURT.png"
+              alt="FURT - Day Drinking Society Presents"
+              className="h-10 sm:h-11 w-auto object-contain max-w-[210px]"
+            />
           </div>
 
-          <div>
-            <h1 className="text-xl font-extrabold text-slate-900 tracking-tight">
-              POOR DECISIONS
-            </h1>
-            <p className="text-xs text-slate-500 mt-1 flex items-center justify-center gap-1.5 font-medium">
-              <Lock className="w-3.5 h-3.5 text-[#FC661B]" />
-              <span>Unesi PIN za prijavu</span>
-            </p>
+          {/* 2. POOR DECISIONS Image */}
+          <div className="flex items-center justify-center w-full px-2">
+            <img
+              src="/poor_decisions.png"
+              alt="POOR DECISIONS"
+              className="h-12 sm:h-14 w-auto object-contain max-w-[240px]"
+            />
           </div>
+
+          <p className="text-xs text-slate-500 pt-0.5 flex items-center justify-center gap-1.5 font-medium">
+            <Lock className="w-3.5 h-3.5 text-[#FC661B]" />
+            <span>Unesi PIN za prijavu</span>
+          </p>
         </div>
 
         {/* 4 PIN Dots */}

@@ -112,16 +112,6 @@ export function Navbar({
             </button>
           </div>
 
-          {/* Quick Lock / Logout Button */}
-          <button
-            type="button"
-            onClick={onLogout}
-            title="Odjavi se / Zaključaj ekran (Zahtijeva PIN)"
-            className="w-9 h-9 rounded-xl bg-slate-100 hover:bg-red-50 border border-slate-200 hover:border-red-200 text-slate-600 hover:text-red-600 flex items-center justify-center transition-colors active:scale-95"
-          >
-            <Lock className="w-3.5 h-3.5" />
-          </button>
-
           {/* Manage Menu Trigger Button */}
           <button
             type="button"
