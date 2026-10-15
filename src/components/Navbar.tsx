@@ -55,7 +55,7 @@ export function Navbar({
   }, [isManageOpen]);
 
   return (
-    <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200 px-3 py-2 sm:px-6 relative shadow-xs">
+    <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200 px-3 py-2 sm:px-6 relative shadow-xs pt-safe-nav">
 
       {/* Top subtle active loading progress line */}
       {isRefreshing && (

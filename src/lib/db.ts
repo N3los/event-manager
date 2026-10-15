@@ -4,9 +4,18 @@ import path from 'path';
 import os from 'os';
 import { Guest, EventMeta, TeamType, TicketType, ReservationStatus } from './types';
 
-// Detect whether Neon connection string is configured
-const connectionString = process.env.DATABASE_URL || '';
-const isNeonConfigured = Boolean(connectionString && connectionString.startsWith('postgres'));
+// Detect whether Neon / Postgres connection string is configured
+const connectionString =
+  process.env.DATABASE_URL ||
+  process.env.DATABASE_URL_UNPOOLED ||
+  process.env.POSTGRES_URL ||
+  process.env.POSTGRES_PRISMA_URL ||
+  process.env.NEON_DATABASE_URL ||
+  '';
+const isNeonConfigured = Boolean(
+  connectionString &&
+  (connectionString.startsWith('postgres://') || connectionString.startsWith('postgresql://'))
+);
 
 let pool: Pool | null = null;
 if (isNeonConfigured) {

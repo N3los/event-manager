@@ -142,7 +142,7 @@ export function GuestDetailsModal({
       }}
     >
       <div 
-        className="w-full max-w-lg rounded-t-3xl sm:rounded-2xl bg-white border border-slate-200 p-4 sm:p-6 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto animate-slide-up sm:animate-scale-in"
+        className="w-full max-w-lg rounded-t-3xl sm:rounded-2xl bg-white border border-slate-200 p-4 sm:p-6 modal-bottom-safe shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto animate-slide-up sm:animate-scale-in"
       >
         
         {/* Mobile Pull Handle Indicator (Tap or Swipe down to close) */}

@@ -46,7 +46,7 @@ export function LiveDashboard({ stats, guests, onBackToDoor }: LiveDashboardProp
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-3 py-4 sm:px-4 sm:py-6 space-y-4 sm:space-y-5 pb-28 sm:pb-32">
+    <div className="max-w-4xl mx-auto px-3 py-4 sm:px-4 sm:py-6 space-y-4 sm:space-y-5 pb-safe">
       
       {/* Top Navigation Back to Door */}
       {onBackToDoor && (

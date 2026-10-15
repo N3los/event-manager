@@ -88,13 +88,43 @@ export default function HomePage() {
     } catch {}
   }, []);
 
-  // Fetch data from server
+  // Fetch data from server with automatic safe-restore protection
   const fetchData = useCallback(async () => {
     setIsLoading(true);
     try {
       const res = await fetch('/api/guests');
       const data = await res.json();
       if (data.success) {
+        // Self-heal protection: if server returned 0 guests, check if client has cached guests from earlier
+        if (!data.guests || data.guests.length === 0) {
+          const cached = localStorage.getItem('pd_cached_guests');
+          if (cached) {
+            try {
+              const parsed = JSON.parse(cached);
+              if (Array.isArray(parsed) && parsed.length > 0) {
+                const restoreRes = await fetch('/api/guests/import', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ guests: parsed, mode: 'replace' }),
+                });
+                const restoreData = await restoreRes.json();
+                if (restoreData.success) {
+                  const finalRes = await fetch('/api/guests');
+                  const finalData = await finalRes.json();
+                  if (finalData.success) {
+                    setGuests(finalData.guests);
+                    setMeta(finalData.meta);
+                    setStats(finalData.stats);
+                    return;
+                  }
+                }
+              }
+            } catch (e) {
+              console.warn('Auto-restore failed:', e);
+            }
+          }
+        }
+
         setGuests(data.guests);
         setMeta(data.meta);
         setStats(data.stats);

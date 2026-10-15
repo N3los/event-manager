@@ -86,7 +86,7 @@ export function DoorCheckin({
   }, [guests, search, statusFilter, ticketFilter, selectedTable]);
 
   return (
-    <div className="max-w-4xl mx-auto px-3 py-3 sm:px-4 sm:py-4 pb-28">
+    <div className="max-w-4xl mx-auto px-3 py-3 sm:px-4 sm:py-4 pb-safe">
       
       {/* Sticky Search & Filter Header */}
       <div className="sticky top-[52px] sm:top-[60px] z-20 pb-2.5 bg-slate-50/95 backdrop-blur-md pt-1">
