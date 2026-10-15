@@ -4,7 +4,7 @@ import React, { useState, useMemo } from 'react';
 import { Guest, TeamType, TicketType } from '@/lib/types';
 import { 
   Search, X, Check, UserPlus, MapPin, 
-  MessageSquare, UserCheck, ChevronRight
+  MessageSquare, UserCheck, ChevronRight, Clock
 } from 'lucide-react';
 import { GuestDetailsModal } from '@/components/GuestDetailsModal';
 
@@ -308,17 +308,22 @@ export function DoorCheckin({
               </div>
 
               {/* Right: Crisp Ticket Badge / Arrival State */}
-              <div className="shrink-0 flex items-center gap-2">
+              <div className="shrink-0 flex flex-col items-end justify-center min-w-[80px]">
                 {guest.is_checked_in ? (
-                  <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">
-                    <Check className="w-3.5 h-3.5 stroke-[3] text-emerald-600" />
-                    <span>U dvorani</span>
+                  <>
+                    <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">
+                      <Check className="w-3.5 h-3.5 stroke-[3] text-emerald-600" />
+                      <span>U dvorani</span>
+                    </div>
                     {guest.checked_in_at && (
-                      <span className="text-[10px] font-mono font-normal text-emerald-600/80 ml-0.5 hidden sm:inline">
-                        {new Date(guest.checked_in_at).toLocaleTimeString('hr-HR', { hour: '2-digit', minute: '2-digit' })}
+                      <span className="text-[11px] font-bold text-slate-500 font-mono mt-1 flex items-center gap-1 tracking-tight">
+                        <Clock className="w-3 h-3 text-slate-400 shrink-0" />
+                        <span>
+                          {new Date(guest.checked_in_at).toLocaleTimeString('hr-HR', { hour: '2-digit', minute: '2-digit' })}
+                        </span>
                       </span>
                     )}
-                  </div>
+                  </>
                 ) : (
                   <div className="flex items-center gap-1.5">
                     <span

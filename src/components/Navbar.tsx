@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { FinancialStats } from '@/lib/types';
 import {
   RefreshCw, SlidersHorizontal, ChevronDown,
-  Coins, Upload, Lock, Unlock, FileText, Check, ArrowRight, LogOut, ArrowLeft
+  Coins, Upload, Lock, Unlock, FileText, Check, ArrowRight, LogOut
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -34,6 +34,25 @@ export function Navbar({
   justRefreshed = false,
 }: NavbarProps) {
   const [isManageOpen, setIsManageOpen] = useState(false);
+  const manageRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdown menu on ANY click/tap outside, without any blur overlay
+  useEffect(() => {
+    if (!isManageOpen) return;
+
+    const handleOutsideClick = (e: MouseEvent | TouchEvent) => {
+      if (manageRef.current && !manageRef.current.contains(e.target as Node)) {
+        setIsManageOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleOutsideClick);
+    document.addEventListener('touchstart', handleOutsideClick);
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+      document.removeEventListener('touchstart', handleOutsideClick);
+    };
+  }, [isManageOpen]);
 
   return (
     <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200 px-3 py-2 sm:px-6 relative shadow-xs">
@@ -85,21 +104,8 @@ export function Navbar({
           )}
         </div>
 
-        {/* Right Actions: Back to door (if in dashboard) + Refresh + Manage Menu */}
-        <div className="flex items-center gap-1.5 sm:gap-2 relative">
-
-          {/* If activeTab === 'dashboard', show quick back button */}
-          {activeTab === 'dashboard' && (
-            <button
-              type="button"
-              onClick={() => setActiveTab('door')}
-              className="h-10 sm:h-11 px-3 sm:px-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs sm:text-sm flex items-center gap-1.5 shadow-sm active:scale-95 transition-all shrink-0"
-            >
-              <ArrowLeft className="w-4 h-4 text-[#FC661B]" />
-              <span className="hidden xs:inline">Natrag na ulaz</span>
-              <span className="xs:hidden">Ulaz</span>
-            </button>
-          )}
+        {/* Right Actions: Refresh + Manage Menu */}
+        <div className="flex items-center gap-1.5 sm:gap-2 relative" ref={manageRef}>
 
           {/* Refresh Action */}
           <button
@@ -144,137 +150,121 @@ export function Navbar({
 
           {/* Manage Dropdown Menu */}
           {isManageOpen && (
-            <>
-              {/* Click-outside Backdrop */}
-              <div
-                className="fixed inset-0 z-40 bg-slate-900/10 backdrop-blur-[1px]"
-                onClick={() => setIsManageOpen(false)}
-              />
+            <div 
+              role="menu"
+              className="absolute right-0 top-12 sm:top-13 z-50 w-72 sm:w-80 rounded-2xl bg-white border border-slate-200 shadow-2xl ring-1 ring-slate-900/5 p-2 space-y-2 animate-scale-in"
+            >
 
-              {/* Menu Container */}
-              <div 
-                role="menu"
-                className="absolute right-0 top-12 sm:top-13 z-50 w-72 sm:w-80 rounded-2xl bg-white border border-slate-200 shadow-2xl ring-1 ring-slate-900/5 p-2 space-y-2 animate-scale-in"
-              >
-
-                {/* Header info */}
-                <div className="px-3 py-2 flex items-center justify-between border-b border-slate-100">
-                  <div>
-                    <span className="text-xs font-extrabold text-slate-900 uppercase tracking-wider block">
-                      Upravljanje
-                    </span>
-                    <span className="text-[10px] text-slate-400 font-medium">
-                      Postavke & završni obračun
-                    </span>
+              {/* Header info */}
+              <div className="px-3 py-2 flex items-center justify-between border-b border-slate-100">
+                <div>
+                  <span className="text-xs font-extrabold text-slate-900 uppercase tracking-wider block">
+                    Upravljanje
+                  </span>
+                  <span className="text-[10px] text-slate-400 font-medium">
+                    Postavke & završni obračun
+                  </span>
+                </div>
+                {stats && (
+                  <div className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#013695]/10 text-[#013695] text-xs font-black">
+                    <Coins className="w-3 h-3 text-[#FC661B]" />
+                    <span>{stats.totalCashExpected} €</span>
                   </div>
-                  {stats && (
-                    <div className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#013695]/10 text-[#013695] text-xs font-black">
-                      <Coins className="w-3 h-3 text-[#FC661B]" />
-                      <span>{stats.totalCashExpected} €</span>
-                    </div>
-                  )}
+                )}
+              </div>
+
+              {/* Section 1: Kraj eventa (Obračun) */}
+              <div className="space-y-1">
+                <div className="px-2 pt-1 text-[9px] font-bold text-slate-400 uppercase tracking-wider">
+                  Kraj eventa (Završno)
                 </div>
 
-                {/* Section 1: Kraj eventa (Obračun) */}
-                <div className="space-y-1">
-                  <div className="px-2 pt-1 text-[9px] font-bold text-slate-400 uppercase tracking-wider">
-                    Kraj eventa (Završno)
-                  </div>
-
-                  {/* 1. Obračun (Live financial settlement) */}
-                  <button
-                    type="button"
-                    role="menuitem"
-                    onClick={() => {
-                      setActiveTab('dashboard');
-                      setIsManageOpen(false);
-                    }}
-                    className={`w-full p-2.5 rounded-xl text-left flex items-center justify-between text-xs font-bold transition-all group ${
+                {/* 1. Obračun (Live financial settlement) */}
+                <button
+                  type="button"
+                  role="menuitem"
+                  onClick={() => {
+                    setActiveTab('dashboard');
+                    setIsManageOpen(false);
+                  }}
+                  className={`w-full p-2.5 rounded-xl text-left flex items-center justify-between text-xs font-bold transition-all group ${
+                    activeTab === 'dashboard'
+                      ? 'bg-[#013695] text-white shadow-sm'
+                      : 'text-slate-800 hover:bg-slate-100'
+                  }`}
+                >
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${
                       activeTab === 'dashboard'
-                        ? 'bg-[#013695] text-white shadow-sm'
-                        : 'text-slate-800 hover:bg-slate-100'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2.5 min-w-0">
-                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${
-                        activeTab === 'dashboard'
-                          ? 'bg-white/20 text-white'
-                          : 'bg-[#FC661B]/15 text-[#FC661B]'
+                        ? 'bg-white/20 text-white'
+                        : 'bg-[#FC661B]/15 text-[#FC661B]'
+                    }`}>
+                      <Coins className="w-4 h-4" />
+                    </div>
+                    <div className="min-w-0">
+                      <span className="block truncate">Obračun & Financije</span>
+                      <span className={`block text-[10px] font-normal truncate ${
+                        activeTab === 'dashboard' ? 'text-white/80' : 'text-slate-500'
                       }`}>
-                        <Coins className="w-4 h-4" />
-                      </div>
-                      <div className="min-w-0">
-                        <span className="block truncate">Obračun & Financije</span>
-                        <span className={`block text-[10px] font-normal truncate ${
-                          activeTab === 'dashboard' ? 'text-white/80' : 'text-slate-500'
-                        }`}>
-                          Konačna zarada i raspodjela
-                        </span>
-                      </div>
+                        Konačna zarada i raspodjela
+                      </span>
                     </div>
-                    {activeTab === 'dashboard' ? (
-                      <Check className="w-4 h-4 text-white shrink-0" />
-                    ) : (
-                      <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-slate-700 group-hover:translate-x-0.5 transition-all shrink-0" />
-                    )}
-                  </button>
-
-                  {/* 2. Zaključi event */}
-                  <button
-                    type="button"
-                    role="menuitem"
-                    onClick={() => {
-                      onOpenCloseEvent();
-                      setIsManageOpen(false);
-                    }}
-                    className={`w-full p-2.5 rounded-xl text-left flex items-center justify-between text-xs font-bold transition-colors group ${
-                      stats?.isClosed
-                        ? 'text-amber-700 hover:bg-amber-50'
-                        : 'text-red-700 hover:bg-red-50'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2.5 min-w-0">
-                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${
-                        stats?.isClosed
-                          ? 'bg-amber-100 text-amber-700'
-                          : 'bg-red-100 text-red-700'
-                      }`}>
-                        {stats?.isClosed ? <Unlock className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
-                      </div>
-                      <div className="min-w-0">
-                        <span className="block truncate">
-                          {stats?.isClosed ? 'Ponovno otvori event' : 'Zaključi event'}
-                        </span>
-                        <span className="block text-[10px] font-normal text-slate-500 truncate">
-                          {stats?.isClosed ? 'Event je trenutno zaključen' : 'Brojanje gotovine & PIN'}
-                        </span>
-                      </div>
-                    </div>
+                  </div>
+                  {activeTab === 'dashboard' ? (
+                    <Check className="w-4 h-4 text-white shrink-0" />
+                  ) : (
                     <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-slate-700 group-hover:translate-x-0.5 transition-all shrink-0" />
-                  </button>
+                  )}
+                </button>
 
-                  {/* 3. Službeni PDF Izvještaj */}
-                  <Link
-                    href="/report"
-                    target="_blank"
-                    role="menuitem"
-                    onClick={() => setIsManageOpen(false)}
-                    className="w-full p-2.5 rounded-xl text-left flex items-center justify-between text-xs font-bold text-slate-800 hover:bg-slate-100 transition-colors group"
-                  >
-                    <div className="flex items-center gap-2.5 min-w-0">
-                      <div className="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
-                        <FileText className="w-4 h-4" />
-                      </div>
-                      <div className="min-w-0">
-                        <span className="block truncate">Službeni PDF izvještaj</span>
-                        <span className="block text-[10px] font-normal text-slate-500 truncate">
-                          A4 pregled, print & WhatsApp
-                        </span>
-                      </div>
+                {/* 2. Službeni PDF Izvještaj */}
+                <Link
+                  href="/report"
+                  target="_blank"
+                  role="menuitem"
+                  onClick={() => setIsManageOpen(false)}
+                  className="w-full p-2.5 rounded-xl text-left flex items-center justify-between text-xs font-bold text-slate-800 hover:bg-slate-100 transition-colors group"
+                >
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
+                      <FileText className="w-4 h-4" />
                     </div>
-                    <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-slate-700 group-hover:translate-x-0.5 transition-all shrink-0" />
-                  </Link>
-                </div>
+                    <div className="min-w-0">
+                      <span className="block truncate">Službeni PDF izvještaj</span>
+                      <span className="block text-[10px] font-normal text-slate-500 truncate">
+                        A4 pregled, print & WhatsApp
+                      </span>
+                    </div>
+                  </div>
+                  <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-slate-700 group-hover:translate-x-0.5 transition-all shrink-0" />
+                </Link>
+
+                {/* 3. Zaključi event (Neutral styled, last in group) */}
+                <button
+                  type="button"
+                  role="menuitem"
+                  onClick={() => {
+                    onOpenCloseEvent();
+                    setIsManageOpen(false);
+                  }}
+                  className="w-full p-2.5 rounded-xl text-left flex items-center justify-between text-xs font-bold text-slate-800 hover:bg-slate-100 transition-colors group"
+                >
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className="w-8 h-8 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center shrink-0">
+                      {stats?.isClosed ? <Unlock className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
+                    </div>
+                    <div className="min-w-0">
+                      <span className="block truncate">
+                        {stats?.isClosed ? 'Ponovno otvori event' : 'Zaključi event'}
+                      </span>
+                      <span className="block text-[10px] font-normal text-slate-500 truncate">
+                        {stats?.isClosed ? 'Event je trenutno zaključen' : 'Brojanje gotovine & PIN'}
+                      </span>
+                    </div>
+                  </div>
+                  <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-slate-700 group-hover:translate-x-0.5 transition-all shrink-0" />
+                </button>
+              </div>
 
                 <div className="border-t border-slate-100" />
 
@@ -338,7 +328,6 @@ export function Navbar({
                 </div>
 
               </div>
-            </>
           )}
 
         </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Guest, TeamType, TicketType, ReservationStatus } from '@/lib/types';
 import { 
   X, Check, RotateCcw, Edit2, MapPin, Tag, MessageSquare, 
@@ -32,6 +32,21 @@ export function GuestDetailsModal({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [showUndoConfirm, setShowUndoConfirm] = useState(false);
+  const touchStartY = useRef<number | null>(null);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartY.current = e.touches[0].clientY;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartY.current !== null) {
+      const deltaY = e.changedTouches[0].clientY - touchStartY.current;
+      if (deltaY > 40) {
+        onClose();
+      }
+      touchStartY.current = null;
+    }
+  };
 
   // Form values (pre-populated)
   const [name, setName] = useState('');
@@ -120,16 +135,36 @@ export function GuestDetailsModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-slate-900/50 backdrop-blur-xs animate-fade-in p-0 sm:p-4">
+    <div 
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-slate-900/50 backdrop-blur-xs animate-fade-in p-0 sm:p-4"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
       <div 
         className="w-full max-w-lg rounded-t-3xl sm:rounded-2xl bg-white border border-slate-200 p-4 sm:p-6 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto animate-slide-up sm:animate-scale-in"
       >
         
-        {/* Mobile Pull Handle Indicator */}
-        <div className="w-12 h-1.5 bg-slate-300 rounded-full mx-auto sm:hidden mb-1" />
+        {/* Mobile Pull Handle Indicator (Tap or Swipe down to close) */}
+        <div
+          role="button"
+          tabIndex={0}
+          aria-label="Zatvori povlačenjem ili klikom"
+          onClick={onClose}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+          className="w-full pt-1 pb-2.5 flex justify-center items-center cursor-pointer select-none sm:hidden -mt-1 active:opacity-60 group"
+          title="Klikni ili povuci dolje za zatvaranje"
+        >
+          <div className="w-12 h-1.5 bg-slate-300 group-hover:bg-slate-400 group-active:bg-slate-500 rounded-full transition-colors" />
+        </div>
 
         {/* Modal Header */}
-        <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div 
+          className="flex items-center justify-between pb-3 border-b border-slate-100"
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
           <div className="flex items-center gap-2.5 flex-1 min-w-0 pr-2">
             <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${
               guest.is_checked_in 
@@ -203,7 +238,7 @@ export function GuestDetailsModal({
                 {guest.is_checked_in ? 'U dvorani (Narukvica izdana)' : 'Čeka na ulazu'}
               </span>
               {guest.checked_in_at && (
-                <span className="block text-[11px] opacity-80 mt-0.5 font-mono">
+                <span className="block text-xs font-bold text-emerald-800 mt-0.5 font-mono">
                   Dolazak: {new Date(guest.checked_in_at).toLocaleTimeString('hr-HR', { hour: '2-digit', minute: '2-digit' })}
                 </span>
               )}
