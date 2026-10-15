@@ -77,55 +77,31 @@ export function PinLoginGate({ onAuthenticated }: PinLoginGateProps) {
   }, [handleDigit, handleDelete]);
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-50 flex flex-col items-center justify-center p-4 overflow-y-auto">
+    <div className="fixed inset-0 z-50 bg-slate-50 flex flex-col items-center p-4 overflow-y-auto">
       {/* Background ambient lighting */}
       <div className="absolute top-1/4 w-96 h-96 bg-[#013695]/5 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-1/4 w-72 h-72 bg-[#FC661B]/5 rounded-full blur-3xl pointer-events-none" />
+      {/* 1. FURT Logo */}
+      <div className="flex items-center justify-center w-full px-2">
+        <img
+          src="/FURT.png"
+          alt="FURT - Day Drinking Society Presents"
+          className="h-24 sm:h-28 w-auto object-contain max-w-[410px]"
+        />
+      </div>
 
-      <div className="w-full max-w-sm bg-white rounded-3xl border border-slate-200/90 shadow-2xl shadow-slate-300/50 p-6 sm:p-7 relative z-10 flex flex-col items-center text-center space-y-5 my-auto">
-        
+      {/* 2. POOR DECISIONS Image */}
+      <div className="flex items-center justify-center w-full px-2">
+        <img
+          src="/poor_decisions.png"
+          alt="POOR DECISIONS"
+          className="h-20 w-auto object-contain max-w-[240px]"
+        />
+      </div>
+
+      <div className="w-full max-w-sm bg-white rounded-3xl border border-slate-200/90 shadow-2xl shadow-slate-300/50 p-6 sm:p-7 relative z-10 flex flex-col items-center text-center space-y-5 my-8">
+
         {/* Brand Logos: FURT -> POOR DECISIONS -> Prompt */}
-        <div className="space-y-3 flex flex-col items-center w-full">
-          {/* 1. FURT Logo */}
-          <div className="flex items-center justify-center w-full px-2">
-            <img
-              src="/FURT.png"
-              alt="FURT - Day Drinking Society Presents"
-              className="h-10 sm:h-11 w-auto object-contain max-w-[210px]"
-            />
-          </div>
-
-          {/* 2. POOR DECISIONS Image */}
-          <div className="flex items-center justify-center w-full px-2">
-            <img
-              src="/poor_decisions.png"
-              alt="POOR DECISIONS"
-              className="h-12 sm:h-14 w-auto object-contain max-w-[240px]"
-            />
-          </div>
-
-          <p className="text-xs text-slate-500 pt-0.5 flex items-center justify-center gap-1.5 font-medium">
-            <Lock className="w-3.5 h-3.5 text-[#FC661B]" />
-            <span>Unesi PIN za prijavu</span>
-          </p>
-        </div>
-
-        {/* 4 PIN Dots */}
-        <div className={`flex items-center justify-center gap-3.5 py-1 transition-transform ${shake ? 'animate-bounce' : ''}`}>
-          {[0, 1, 2, 3].map((index) => {
-            const isFilled = pin.length > index;
-            return (
-              <div
-                key={index}
-                className={`w-4 h-4 rounded-full border-2 transition-all duration-150 ${
-                  isFilled
-                    ? 'bg-[#FC661B] border-[#FC661B] scale-110 shadow-md shadow-[#FC661B]/40'
-                    : 'bg-slate-100 border-slate-300'
-                }`}
-              />
-            );
-          })}
-        </div>
 
         {/* Error message if invalid PIN */}
         {error ? (
@@ -134,8 +110,30 @@ export function PinLoginGate({ onAuthenticated }: PinLoginGateProps) {
             <span>{error}</span>
           </div>
         ) : (
-          <div className="h-7" /> /* Spacer to prevent layout shift */
+          <div className="space-y-3 flex flex-col items-center w-full">
+            <p className="text-xs text-slate-500 pt-0.5 flex items-center justify-center gap-1.5 font-medium">
+              <Lock className="w-3.5 h-3.5 text-[#FC661B]" />
+              <span>Unesi PIN za prijavu</span>
+            </p>
+          </div>
+
         )}
+
+        {/* 4 PIN Dots */}
+        <div className={`flex items-center justify-center gap-3.5 py-1 transition-transform ${shake ? 'animate-shake' : ''}`}>
+          {[0, 1, 2, 3].map((index) => {
+            const isFilled = pin.length > index;
+            return (
+              <div
+                key={index}
+                className={`w-4 h-4 rounded-full border-2 transition-all duration-150 ${isFilled
+                  ? 'bg-[#FC661B] border-[#FC661B] scale-110 shadow-md shadow-[#FC661B]/40'
+                  : 'bg-slate-100 border-slate-300'
+                  }`}
+              />
+            );
+          })}
+        </div>
 
         {/* Numeric Touch Keypad */}
         <div className="w-full grid grid-cols-3 gap-2.5">
@@ -181,12 +179,6 @@ export function PinLoginGate({ onAuthenticated }: PinLoginGateProps) {
             <Delete className="w-5 h-5 text-slate-500" />
           </button>
         </div>
-
-        {/* Subtle Hint */}
-        <p className="text-[11px] text-slate-400 font-mono">
-          Zadani PIN: <span className="text-slate-600 font-bold">1234</span>
-        </p>
-
       </div>
     </div>
   );

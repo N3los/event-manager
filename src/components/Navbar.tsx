@@ -46,71 +46,58 @@ export function Navbar({
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-2">
         
         {/* Brand & Cash Counter */}
-        <div className="flex items-center gap-2.5 sm:gap-4 min-w-0">
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-xl bg-[#013695] border border-[#024ec4] flex items-center justify-center shadow-md shadow-[#013695]/20 shrink-0">
+            <div className="w-8 h-8 rounded-xl bg-[#013695] border border-[#024ec4] flex items-center justify-center shadow-xs shrink-0">
               <Sparkles className="w-4 h-4 text-[#FC661B]" />
             </div>
-            <div className="min-w-0">
-              <h1 className="text-sm sm:text-base font-extrabold tracking-tight text-slate-900 leading-none truncate flex items-center gap-1.5">
-                <span>POOR DECISIONS</span>
-                {stats?.isClosed && (
-                  <span className="text-[9px] uppercase font-bold px-1.5 py-0.5 rounded bg-red-100 text-red-700 border border-red-200 shrink-0">
-                    ZAKLJUČENO
-                  </span>
-                )}
-              </h1>
-              <p className="text-[10px] sm:text-[11px] text-slate-500 leading-none mt-0.5">
-                Ulaz & Obračun
-              </p>
-            </div>
+            <h1 className="text-sm sm:text-base font-extrabold tracking-tight text-slate-900 leading-none truncate flex items-center gap-1.5">
+              <span>POOR DECISIONS</span>
+              {stats?.isClosed && (
+                <span className="text-[9px] uppercase font-bold px-1.5 py-0.5 rounded bg-red-100 text-red-700 border border-red-200 shrink-0">
+                  ZAKLJUČENO
+                </span>
+              )}
+            </h1>
           </div>
 
-          {/* Cash Counter */}
+          {/* Cash Counter - Quick link to finances */}
           {stats && (
-            <div 
-              title={`Ukupno u blagajni: ${stats.totalCashExpected} €`}
-              className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#013695]/10 border border-[#013695]/20 text-[#013695] text-xs shrink-0 shadow-xs"
+            <button
+              type="button"
+              onClick={() => setActiveTab('dashboard')}
+              title="Otvori obračun blagajne"
+              className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#013695]/10 hover:bg-[#013695]/15 border border-[#013695]/20 text-[#013695] text-xs font-extrabold shrink-0 transition-colors active:scale-95 shadow-xs"
             >
               <Coins className="w-3.5 h-3.5 text-[#FC661B]" />
-              <span className="font-extrabold text-[#013695] text-xs">{stats.totalCashExpected} €</span>
-            </div>
+              <span>{stats.totalCashExpected} €</span>
+            </button>
           )}
         </div>
 
-        {/* Right Actions: Refresh + Quick Lock + Manage Dropdown */}
+        {/* Right Actions: Refresh + Manage Dropdown */}
         <div className="flex items-center gap-1.5 sm:gap-2 relative">
           
-          {/* Refresh Action with Clear Loading & Success Indicator */}
-          <div className="flex items-center gap-1.5">
-            {justRefreshed && (
-              <span className="hidden sm:inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700 text-[11px] font-bold animate-fade-in">
-                <Check className="w-3 h-3 stroke-[3]" />
-                <span>Osvježeno</span>
-              </span>
-            )}
-
-            <button
-              type="button"
-              onClick={onRefresh}
-              disabled={isRefreshing || isLoading}
-              title="Osvježi podatke"
-              className={`h-9 px-2.5 rounded-xl border flex items-center justify-center gap-1.5 transition-all active:scale-95 ${
-                isRefreshing
-                  ? 'bg-orange-50 border-[#FC661B]/60 text-[#FC661B]'
-                  : justRefreshed
-                    ? 'bg-emerald-50 border-emerald-300 text-emerald-700'
-                    : 'bg-slate-100 hover:bg-slate-200 border-slate-200 text-slate-700'
-              }`}
-            >
+          {/* Refresh Action */}
+          <button
+            type="button"
+            onClick={onRefresh}
+            disabled={isRefreshing || isLoading}
+            title={justRefreshed ? 'Osvježeno!' : 'Osvježi podatke'}
+            className={`w-9 h-9 rounded-xl border flex items-center justify-center transition-all active:scale-95 ${
+              isRefreshing
+                ? 'bg-orange-50 border-[#FC661B]/60 text-[#FC661B]'
+                : justRefreshed
+                  ? 'bg-emerald-50 border-emerald-300 text-emerald-700'
+                  : 'bg-slate-100 hover:bg-slate-200 border-slate-200 text-slate-700'
+            }`}
+          >
+            {justRefreshed ? (
+              <Check className="w-4 h-4 text-emerald-600 stroke-[3] animate-fade-in" />
+            ) : (
               <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-[#FC661B]' : ''}`} />
-              {isRefreshing ? (
-                <span className="text-[11px] font-bold text-[#FC661B] hidden sm:inline">Osvježavam...</span>
-              ) : justRefreshed ? (
-                <span className="text-[11px] font-bold text-emerald-700 sm:hidden">✓</span>
-              ) : null}
-            </button>
-          </div>
+            )}
+          </button>
 
           {/* Manage Menu Trigger Button */}
           <button
