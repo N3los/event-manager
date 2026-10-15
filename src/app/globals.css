@@ -3,30 +3,30 @@
 :root {
   --primary: #013695;
   --primary-hover: #0248c7;
-  --primary-subtle: rgba(1, 54, 149, 0.15);
+  --primary-subtle: rgba(1, 54, 149, 0.08);
   
   --accent: #FC661B;
   --accent-hover: #e5530b;
-  --accent-subtle: rgba(252, 102, 27, 0.15);
+  --accent-subtle: rgba(252, 102, 27, 0.1);
   
-  --bg-main: #090d16;
-  --bg-surface: #101726;
-  --bg-card: #151f33;
-  --bg-elevated: #1c2842;
+  --bg-main: #f8fafc;
+  --bg-surface: #ffffff;
+  --bg-card: #ffffff;
+  --bg-elevated: #f1f5f9;
   
-  --border-subtle: #1e293b;
-  --border-highlight: #334155;
+  --border-subtle: #e2e8f0;
+  --border-highlight: #cbd5e1;
   
-  --text-main: #f8fafc;
-  --text-muted: #94a3b8;
-  --text-faint: #64748b;
+  --text-main: #0f172a;
+  --text-muted: #475569;
+  --text-faint: #94a3b8;
   
   --success: #10b981;
-  --success-bg: rgba(16, 185, 129, 0.12);
+  --success-bg: rgba(16, 185, 129, 0.1);
   --warning: #f59e0b;
-  --warning-bg: rgba(245, 158, 11, 0.12);
+  --warning-bg: rgba(245, 158, 11, 0.1);
   --danger: #ef4444;
-  --danger-bg: rgba(239, 68, 68, 0.12);
+  --danger-bg: rgba(239, 68, 68, 0.1);
 }
 
 * {
@@ -44,7 +44,7 @@ html, body {
   touch-action: manipulation;
 }
 
-/* Custom scrollbar for fast mobile scrolling */
+/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -53,11 +53,11 @@ html, body {
   background: var(--bg-main);
 }
 ::-webkit-scrollbar-thumb {
-  background: #25334d;
+  background: #cbd5e1;
   border-radius: 3px;
 }
 
-/* Print Styles: Hide all interactive UI / buttons when printing, keep report clean */
+/* Print Styles */
 @media print {
   @page {
     size: A4 portrait;

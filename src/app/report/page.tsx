@@ -75,8 +75,8 @@ export default function ReportPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center text-white">
-        <div className="flex items-center gap-2 text-sm">
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center text-slate-800">
+        <div className="flex items-center gap-2 text-sm font-semibold">
           <RefreshCw className="w-5 h-5 animate-spin text-[#FC661B]" />
           <span>Učitavam izvještaj...</span>
         </div>
@@ -86,10 +86,10 @@ export default function ReportPage() {
 
   if (!stats) {
     return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center text-white p-4">
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center text-slate-800 p-4">
         <div className="text-center">
           <p className="text-base font-bold">Nema dostupnih podataka za izvještaj.</p>
-          <Link href="/" className="mt-3 inline-block px-4 py-2 rounded-xl bg-blue-600 text-xs font-bold">
+          <Link href="/" className="mt-3 inline-block px-4 py-2 rounded-xl bg-[#013695] text-white text-xs font-bold shadow-xs">
             Natrag na početnu
           </Link>
         </div>
@@ -98,20 +98,20 @@ export default function ReportPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-200 text-slate-900 print:bg-white print:p-0">
+    <div className="min-h-screen bg-slate-100 text-slate-900 print:bg-white print:p-0">
       
       {/* Top Floating Action Bar (Hidden in Print) */}
-      <div className="no-print sticky top-0 z-30 bg-slate-900 text-white border-b border-slate-800 px-4 py-3 shadow-lg">
+      <div className="no-print sticky top-0 z-30 bg-white/95 backdrop-blur-md text-slate-900 border-b border-slate-200 px-4 py-3 shadow-xs">
         <div className="max-w-4xl mx-auto flex items-center justify-between gap-2 flex-wrap">
           <div className="flex items-center gap-2">
             <Link
               href="/"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 transition-colors"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-xs font-semibold text-slate-700 transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>Natrag na ulaz</span>
             </Link>
-            <span className="text-xs font-bold text-slate-300 hidden sm:inline">
+            <span className="text-xs font-bold text-slate-500 hidden sm:inline">
               | Službeni PDF pregled
             </span>
           </div>
@@ -119,7 +119,7 @@ export default function ReportPage() {
           <div className="flex items-center gap-2">
             <button
               onClick={handleCopyWhatsApp}
-              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-bold transition-all"
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all shadow-xs"
             >
               {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
               <span>{copied ? 'Kopirano!' : 'Kopiraj za WhatsApp'}</span>
@@ -127,7 +127,7 @@ export default function ReportPage() {
 
             <button
               onClick={handlePrint}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#FC661B] hover:bg-[#e5530b] text-white text-xs font-bold shadow-md shadow-[#FC661B]/30 transition-all"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#FC661B] hover:bg-[#e5530b] text-white text-xs font-bold shadow-md shadow-[#FC661B]/25 transition-all"
             >
               <Printer className="w-4 h-4" />
               <span>ISPIŠI / SPREMI KAO PDF</span>
@@ -137,7 +137,7 @@ export default function ReportPage() {
       </div>
 
       {/* Main A4 Printable Paper Container */}
-      <div className="max-w-4xl mx-auto my-4 sm:my-8 bg-white shadow-2xl rounded-xl border border-slate-300 p-4 sm:p-10 print:m-0 print:p-0 print:border-none print:shadow-none print:rounded-none">
+      <div className="max-w-4xl mx-auto my-4 sm:my-8 bg-white shadow-xl rounded-xl border border-slate-200 p-4 sm:p-10 print:m-0 print:p-0 print:border-none print:shadow-none print:rounded-none">
         <PrintableReport stats={stats} meta={meta} guests={guests} />
       </div>
 

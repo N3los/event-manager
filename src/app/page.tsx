@@ -330,14 +330,14 @@ export default function HomePage() {
   // Prevent flash while checking localStorage on first mount
   if (!authChecked) {
     return (
-      <div className="min-h-screen bg-[#090d16] flex items-center justify-center">
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="w-8 h-8 border-2 border-[#FC661B] border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#090d16] text-[#f8fafc] flex flex-col font-sans">
+    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans">
       
       {/* Top Navbar */}
         <Navbar
@@ -357,29 +357,29 @@ export default function HomePage() {
         <main className="flex-1">
           {/* Banner if guest list is empty */}
           {guests.length === 0 && !isLoading && (
-            <div className="max-w-xl mx-auto my-8 p-6 rounded-2xl bg-[#101726] border border-[#1e293b] text-center space-y-4 shadow-xl">
-              <div className="w-12 h-12 rounded-2xl bg-[#013695]/30 border border-[#013695] mx-auto flex items-center justify-center">
+            <div className="max-w-xl mx-auto my-8 p-6 rounded-2xl bg-white border border-slate-200 text-center space-y-4 shadow-sm">
+              <div className="w-12 h-12 rounded-2xl bg-[#013695]/10 border border-[#013695]/20 mx-auto flex items-center justify-center">
                 <Sparkles className="w-6 h-6 text-[#FC661B]" />
               </div>
               <div>
-                <h2 className="text-base font-bold text-white">Guest lista je prazna</h2>
-                <p className="text-xs text-slate-400 mt-1">
+                <h2 className="text-base font-bold text-slate-900">Guest lista je prazna</h2>
+                <p className="text-xs text-slate-600 mt-1">
                   Možeš odmah učitati postojeće goste iz svoje Google tablice jednim klikom ili uvesti CSV datoteku.
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row gap-2 justify-center pt-2">
                 <button
                   onClick={handleSeedGoogleSheetData}
-                  className="px-4 py-2.5 rounded-xl bg-[#013695] hover:bg-[#024ec4] text-white text-xs font-bold shadow-md shadow-[#013695]/30 flex items-center justify-center gap-2"
+                  className="px-4 py-2.5 rounded-xl bg-[#013695] hover:bg-[#024ec4] text-white text-xs font-bold shadow-md shadow-[#013695]/20 flex items-center justify-center gap-2"
                 >
                   <Sparkles className="w-4 h-4 text-[#FC661B]" />
                   <span>Učitaj goste iz Google tablice (20 osoba)</span>
                 </button>
                 <button
                   onClick={() => setIsImportOpen(true)}
-                  className="px-4 py-2.5 rounded-xl bg-[#151f33] hover:bg-[#1c2842] border border-[#1e293b] text-slate-300 text-xs font-semibold flex items-center justify-center gap-1.5"
+                  className="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors"
                 >
-                  <UploadCloud className="w-4 h-4 text-slate-400" />
+                  <UploadCloud className="w-4 h-4 text-slate-500" />
                   <span>Uvezi drugi CSV</span>
                 </button>
               </div>

@@ -86,7 +86,7 @@ export function DoorCheckin({
     <div className="max-w-4xl mx-auto px-3 py-3 sm:px-4 sm:py-4 pb-28">
       
       {/* Search Input Bar - sticky below header */}
-      <div className="sticky top-[58px] sm:top-[65px] z-20 pb-3 bg-[#090d16]">
+      <div className="sticky top-[58px] sm:top-[65px] z-20 pb-3 bg-slate-50/95 backdrop-blur-md">
         <div className="relative">
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
           <input
@@ -94,13 +94,13 @@ export function DoorCheckin({
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Pretraži ime, stol, napomenu ili tim..."
-            className="w-full h-11 pl-10 pr-10 rounded-xl bg-[#151f33] border border-[#1e293b] focus:border-[#FC661B] focus:ring-1 focus:ring-[#FC661B] text-sm text-white placeholder-slate-400 outline-none transition-all shadow-inner"
+            className="w-full h-11 pl-10 pr-10 rounded-xl bg-white border border-slate-300 focus:border-[#FC661B] focus:ring-2 focus:ring-[#FC661B]/20 text-sm text-slate-900 placeholder-slate-400 outline-none transition-all shadow-xs"
             autoFocus
           />
           {search && (
             <button
               onClick={() => setSearch('')}
-              className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-white"
+              className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-slate-700"
             >
               <X className="w-4 h-4" />
             </button>
@@ -113,8 +113,8 @@ export function DoorCheckin({
             onClick={() => setFilter('pending')}
             className={`px-3 py-1.5 rounded-lg font-semibold shrink-0 transition-all ${
               filter === 'pending'
-                ? 'bg-[#FC661B] text-white shadow-sm shadow-[#FC661B]/30'
-                : 'bg-[#151f33] text-slate-300 hover:text-white border border-[#1e293b]'
+                ? 'bg-[#FC661B] text-white shadow-xs'
+                : 'bg-white text-slate-700 hover:text-slate-900 border border-slate-200 hover:bg-slate-100 shadow-xs'
             }`}
           >
             Čekaju na ulazu ({pendingCount})
@@ -123,8 +123,8 @@ export function DoorCheckin({
             onClick={() => setFilter('checked_in')}
             className={`px-3 py-1.5 rounded-lg font-semibold shrink-0 transition-all ${
               filter === 'checked_in'
-                ? 'bg-emerald-600 text-white shadow-sm'
-                : 'bg-[#151f33] text-slate-300 hover:text-white border border-[#1e293b]'
+                ? 'bg-emerald-600 text-white shadow-xs'
+                : 'bg-white text-slate-700 hover:text-slate-900 border border-slate-200 hover:bg-slate-100 shadow-xs'
             }`}
           >
             U dvorani ({checkedInCount})
@@ -133,8 +133,8 @@ export function DoorCheckin({
             onClick={() => setFilter('all')}
             className={`px-3 py-1.5 rounded-lg font-medium shrink-0 transition-all ${
               filter === 'all'
-                ? 'bg-[#013695] text-white'
-                : 'bg-[#151f33] text-slate-400 hover:text-white border border-[#1e293b]'
+                ? 'bg-[#013695] text-white shadow-xs'
+                : 'bg-white text-slate-700 hover:text-slate-900 border border-slate-200 hover:bg-slate-100 shadow-xs'
             }`}
           >
             Svi ({guests.length})
@@ -143,8 +143,8 @@ export function DoorCheckin({
             onClick={() => setFilter('placa')}
             className={`px-2.5 py-1.5 rounded-lg font-medium shrink-0 transition-all ${
               filter === 'placa'
-                ? 'bg-[#013695] text-white'
-                : 'bg-[#151f33] text-slate-400 hover:text-white border border-[#1e293b]'
+                ? 'bg-[#013695] text-white shadow-xs'
+                : 'bg-white text-slate-600 hover:text-slate-900 border border-slate-200 hover:bg-slate-100 shadow-xs'
             }`}
           >
             Plaća (39 €)
@@ -153,8 +153,8 @@ export function DoorCheckin({
             onClick={() => setFilter('gratis')}
             className={`px-2.5 py-1.5 rounded-lg font-medium shrink-0 transition-all ${
               filter === 'gratis'
-                ? 'bg-[#013695] text-white'
-                : 'bg-[#151f33] text-slate-400 hover:text-white border border-[#1e293b]'
+                ? 'bg-[#013695] text-white shadow-xs'
+                : 'bg-white text-slate-600 hover:text-slate-900 border border-slate-200 hover:bg-slate-100 shadow-xs'
             }`}
           >
             Gratis (0 €)
@@ -165,7 +165,7 @@ export function DoorCheckin({
             <select
               value={selectedTable}
               onChange={(e) => setSelectedTable(e.target.value)}
-              className="px-2.5 py-1.5 rounded-lg bg-[#151f33] text-slate-300 border border-[#1e293b] font-medium outline-none text-xs shrink-0"
+              className="px-2.5 py-1.5 rounded-lg bg-white text-slate-700 border border-slate-200 font-medium outline-none text-xs shrink-0 shadow-xs"
             >
               <option value="all">Svi stolovi</option>
               {tables.map((t) => (
@@ -179,15 +179,15 @@ export function DoorCheckin({
       {/* Guest List */}
       <div className="space-y-2 mt-2">
         {filteredGuests.length === 0 ? (
-          <div className="text-center py-12 px-4 rounded-2xl bg-[#101726] border border-[#1e293b]">
-            <Search className="w-8 h-8 text-slate-600 mx-auto mb-2" />
-            <h3 className="text-sm font-semibold text-slate-300">Nema rezultata</h3>
+          <div className="text-center py-12 px-4 rounded-2xl bg-white border border-slate-200 shadow-sm">
+            <Search className="w-8 h-8 text-slate-400 mx-auto mb-2" />
+            <h3 className="text-sm font-bold text-slate-800">Nema rezultata</h3>
             <p className="text-xs text-slate-500 mt-1">
               {search ? `Nema gosta pod upitom "${search}"` : 'Nema gostiju u odabranoj kategoriji.'}
             </p>
             <button
               onClick={onOpenAddGuest}
-              className="mt-4 inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#FC661B] hover:bg-[#e5530b] text-white text-xs font-bold transition-all shadow-lg shadow-[#FC661B]/20"
+              className="mt-4 inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#FC661B] hover:bg-[#e5530b] text-white text-xs font-bold transition-all shadow-md shadow-[#FC661B]/20"
             >
               <UserPlus className="w-4 h-4" />
               Dodaj gosta "{search || 'Novi'}"
@@ -200,8 +200,8 @@ export function DoorCheckin({
               onClick={() => setSelectedGuestId(guest.id)}
               className={`group cursor-pointer select-none rounded-2xl border transition-all active:scale-[0.99] p-3.5 sm:p-4 flex items-center justify-between gap-3 ${
                 guest.is_checked_in
-                  ? 'bg-[#0f172a]/60 border-emerald-950/40 hover:border-emerald-700/50 hover:bg-[#111e33]'
-                  : 'bg-[#151f33] border-[#1e293b] hover:border-[#013695] hover:bg-[#18243c] shadow-sm'
+                  ? 'bg-slate-100/80 border-emerald-200/80 hover:bg-slate-100'
+                  : 'bg-white border-slate-200 hover:border-[#013695]/40 hover:bg-slate-50/80 shadow-xs'
               }`}
             >
               {/* Left: Avatar / Status indicator + Guest Info */}
@@ -210,8 +210,8 @@ export function DoorCheckin({
                 <div
                   className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
                     guest.is_checked_in
-                      ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
-                      : 'bg-[#013695]/30 text-blue-300 border border-[#013695]/50 group-hover:border-[#FC661B]/60 group-hover:text-[#FC661B]'
+                      ? 'bg-emerald-100 text-emerald-700 border border-emerald-300'
+                      : 'bg-[#013695]/10 text-[#013695] border border-[#013695]/20 group-hover:bg-[#FC661B]/15 group-hover:border-[#FC661B]/30 group-hover:text-[#FC661B]'
                   }`}
                 >
                   {guest.is_checked_in ? (
@@ -229,8 +229,8 @@ export function DoorCheckin({
                     <h4
                       className={`text-base sm:text-lg font-bold tracking-tight truncate leading-tight transition-colors ${
                         guest.is_checked_in
-                          ? 'text-slate-300 line-through decoration-emerald-500/50'
-                          : 'text-white group-hover:text-amber-100'
+                          ? 'text-slate-500 line-through decoration-emerald-600/60'
+                          : 'text-slate-900 group-hover:text-[#013695]'
                       }`}
                     >
                       {guest.name}
@@ -238,7 +238,7 @@ export function DoorCheckin({
 
                     {/* Reservation on waitlist pill */}
                     {guest.reservation_status === 'na_cekanju' && (
-                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-50 text-amber-700 border border-amber-200">
                         Na čekanju
                       </span>
                     )}
@@ -248,36 +248,36 @@ export function DoorCheckin({
                   <div className="flex items-center gap-1.5 mt-1 flex-wrap text-xs">
                     {/* Table Badge */}
                     {guest.table_name ? (
-                      <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-md bg-[#013695]/30 text-blue-300 border border-[#013695]/40">
+                      <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-md bg-[#013695]/10 text-[#013695] border border-[#013695]/20">
                         <MapPin className="w-3 h-3 text-[#FC661B]" />
                         {guest.table_name}
                       </span>
                     ) : (
-                      <span className="text-[11px] text-slate-500 italic">
+                      <span className="text-[11px] text-slate-400 italic">
                         Bez stola
                       </span>
                     )}
 
                     {/* Team / Inviter Badge */}
-                    <span className="text-[11px] font-semibold px-2 py-0.5 rounded-md bg-[#0b111e] text-slate-300 border border-[#1e293b]">
+                    <span className="text-[11px] font-semibold px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 border border-slate-200">
                       {guest.team}
                     </span>
 
                     {/* Ticket Type Badge */}
                     {guest.ticket_type === 'gratis' ? (
-                      <span className="text-[11px] font-bold px-2 py-0.5 rounded-md bg-blue-500/15 text-blue-300 border border-blue-500/30">
+                      <span className="text-[11px] font-bold px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 border border-blue-200">
                         Gratis
                       </span>
                     ) : (
-                      <span className="text-[11px] font-bold px-2 py-0.5 rounded-md bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+                      <span className="text-[11px] font-bold px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200">
                         39 €
                       </span>
                     )}
 
                     {/* Note snippet if present */}
                     {guest.note && (
-                      <span className="text-[11px] text-amber-300/90 italic truncate max-w-[160px] sm:max-w-xs flex items-center gap-1">
-                        <MessageSquare className="w-3 h-3 text-amber-400 shrink-0" />
+                      <span className="text-[11px] text-amber-800 bg-amber-50/80 px-1.5 py-0.5 rounded border border-amber-200/60 italic truncate max-w-[160px] sm:max-w-xs flex items-center gap-1">
+                        <MessageSquare className="w-3 h-3 text-amber-600 shrink-0" />
                         <span className="truncate">{guest.note}</span>
                       </span>
                     )}
@@ -289,12 +289,12 @@ export function DoorCheckin({
               <div className="shrink-0 flex items-center gap-2 pl-2">
                 {guest.is_checked_in ? (
                   <div className="flex flex-col items-end">
-                    <span className="inline-flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                    <span className="inline-flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-800 border border-emerald-200">
                       <Check className="w-3.5 h-3.5 stroke-[3]" />
                       <span>U dvorani</span>
                     </span>
                     {guest.checked_in_at && (
-                      <span className="text-[10px] text-slate-400 mt-0.5 font-mono">
+                      <span className="text-[10px] text-slate-500 mt-0.5 font-mono">
                         {new Date(guest.checked_in_at).toLocaleTimeString('hr-HR', {
                           hour: '2-digit',
                           minute: '2-digit',
@@ -303,10 +303,10 @@ export function DoorCheckin({
                     )}
                   </div>
                 ) : (
-                  <div className="flex items-center gap-1 text-slate-400 group-hover:text-white transition-colors">
-                    <span className="text-xs font-medium hidden sm:inline">Detalji</span>
-                    <div className="w-7 h-7 rounded-lg bg-[#1c2842] group-hover:bg-[#FC661B] group-hover:text-white border border-slate-700/60 flex items-center justify-center transition-all">
-                      <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-white" />
+                  <div className="flex items-center gap-1 text-slate-500 group-hover:text-slate-900 transition-colors">
+                    <span className="text-xs font-semibold hidden sm:inline">Detalji</span>
+                    <div className="w-7 h-7 rounded-lg bg-slate-100 group-hover:bg-[#FC661B] group-hover:text-white border border-slate-200 group-hover:border-[#FC661B] flex items-center justify-center transition-all shadow-xs">
+                      <ChevronRight className="w-4 h-4 text-slate-500 group-hover:text-white" />
                     </div>
                   </div>
                 )}
@@ -315,7 +315,6 @@ export function DoorCheckin({
           ))
         )}
       </div>
-
 
       {/* Details Bottom Sheet / Modal */}
       <GuestDetailsModal

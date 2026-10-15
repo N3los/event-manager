@@ -36,7 +36,7 @@ export function Navbar({
   const [isManageOpen, setIsManageOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-30 bg-[#0c1220]/95 backdrop-blur-md border-b border-[#1e293b] px-3 py-2.5 sm:px-6 relative">
+    <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200 px-3 py-2.5 sm:px-6 relative shadow-xs">
       
       {/* Top subtle active loading progress line */}
       {isRefreshing && (
@@ -45,22 +45,22 @@ export function Navbar({
 
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-2">
         
-        {/* Brand & Live Counter */}
+        {/* Brand & Cash Counter */}
         <div className="flex items-center gap-2.5 sm:gap-4 min-w-0">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-xl bg-[#013695] border border-[#024ec4] flex items-center justify-center shadow-md shadow-[#013695]/30 shrink-0">
+            <div className="w-8 h-8 rounded-xl bg-[#013695] border border-[#024ec4] flex items-center justify-center shadow-md shadow-[#013695]/20 shrink-0">
               <Sparkles className="w-4 h-4 text-[#FC661B]" />
             </div>
             <div className="min-w-0">
-              <h1 className="text-sm sm:text-base font-extrabold tracking-tight text-white leading-none truncate flex items-center gap-1.5">
+              <h1 className="text-sm sm:text-base font-extrabold tracking-tight text-slate-900 leading-none truncate flex items-center gap-1.5">
                 <span>POOR DECISIONS</span>
                 {stats?.isClosed && (
-                  <span className="text-[9px] uppercase font-bold px-1.5 py-0.5 rounded bg-red-500/20 text-red-400 border border-red-500/30 shrink-0">
+                  <span className="text-[9px] uppercase font-bold px-1.5 py-0.5 rounded bg-red-100 text-red-700 border border-red-200 shrink-0">
                     ZAKLJUČENO
                   </span>
                 )}
               </h1>
-              <p className="text-[10px] sm:text-[11px] text-slate-400 leading-none mt-0.5">
+              <p className="text-[10px] sm:text-[11px] text-slate-500 leading-none mt-0.5">
                 Ulaz & Obračun
               </p>
             </div>
@@ -70,10 +70,10 @@ export function Navbar({
           {stats && (
             <div 
               title={`Ukupno u blagajni: ${stats.totalCashExpected} €`}
-              className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#013695]/20 border border-[#013695]/40 text-[#60a5fa] text-xs shrink-0"
+              className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#013695]/10 border border-[#013695]/20 text-[#013695] text-xs shrink-0 shadow-xs"
             >
               <Coins className="w-3.5 h-3.5 text-[#FC661B]" />
-              <span className="font-extrabold text-[#FC661B] text-xs">{stats.totalCashExpected} €</span>
+              <span className="font-extrabold text-[#013695] text-xs">{stats.totalCashExpected} €</span>
             </div>
           )}
         </div>
@@ -84,7 +84,7 @@ export function Navbar({
           {/* Refresh Action with Clear Loading & Success Indicator */}
           <div className="flex items-center gap-1.5">
             {justRefreshed && (
-              <span className="hidden sm:inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-[11px] font-bold animate-fade-in">
+              <span className="hidden sm:inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700 text-[11px] font-bold animate-fade-in">
                 <Check className="w-3 h-3 stroke-[3]" />
                 <span>Osvježeno</span>
               </span>
@@ -97,17 +97,17 @@ export function Navbar({
               title="Osvježi podatke"
               className={`h-9 px-2.5 rounded-xl border flex items-center justify-center gap-1.5 transition-all active:scale-95 ${
                 isRefreshing
-                  ? 'bg-[#151f33] border-[#FC661B]/60 shadow-md shadow-[#FC661B]/20 text-[#FC661B]'
+                  ? 'bg-orange-50 border-[#FC661B]/60 text-[#FC661B]'
                   : justRefreshed
-                    ? 'bg-emerald-950/40 border-emerald-500/40 text-emerald-400'
-                    : 'bg-[#151f33] hover:bg-[#1a253d] border-[#1e293b] text-slate-300 hover:text-white'
+                    ? 'bg-emerald-50 border-emerald-300 text-emerald-700'
+                    : 'bg-slate-100 hover:bg-slate-200 border-slate-200 text-slate-700'
               }`}
             >
               <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-[#FC661B]' : ''}`} />
               {isRefreshing ? (
                 <span className="text-[11px] font-bold text-[#FC661B] hidden sm:inline">Osvježavam...</span>
               ) : justRefreshed ? (
-                <span className="text-[11px] font-bold text-emerald-400 sm:hidden">✓</span>
+                <span className="text-[11px] font-bold text-emerald-700 sm:hidden">✓</span>
               ) : null}
             </button>
           </div>
@@ -117,7 +117,7 @@ export function Navbar({
             type="button"
             onClick={onLogout}
             title="Odjavi se / Zaključaj ekran (Zahtijeva PIN)"
-            className="w-9 h-9 rounded-xl bg-[#151f33] hover:bg-red-950/40 border border-[#1e293b] hover:border-red-500/40 text-slate-400 hover:text-red-300 flex items-center justify-center transition-colors active:scale-95"
+            className="w-9 h-9 rounded-xl bg-slate-100 hover:bg-red-50 border border-slate-200 hover:border-red-200 text-slate-600 hover:text-red-600 flex items-center justify-center transition-colors active:scale-95"
           >
             <Lock className="w-3.5 h-3.5" />
           </button>
@@ -128,8 +128,8 @@ export function Navbar({
             onClick={() => setIsManageOpen(!isManageOpen)}
             className={`h-9 px-3 rounded-xl border text-xs font-bold flex items-center gap-1.5 transition-all active:scale-95 ${
               isManageOpen || activeTab === 'dashboard'
-                ? 'bg-[#013695] text-white border-[#024ec4] shadow-md shadow-[#013695]/30'
-                : 'bg-[#151f33] hover:bg-[#1a253d] border-[#1e293b] text-slate-200'
+                ? 'bg-[#013695] text-white border-[#024ec4] shadow-md shadow-[#013695]/20'
+                : 'bg-slate-100 hover:bg-slate-200 border-slate-200 text-slate-800'
             }`}
           >
             <SlidersHorizontal className="w-3.5 h-3.5 text-[#FC661B]" />
@@ -147,9 +147,9 @@ export function Navbar({
               />
 
               {/* Menu Container */}
-              <div className="absolute right-0 top-11 z-40 w-64 rounded-2xl bg-[#111827] border border-[#1e293b] shadow-2xl p-1.5 space-y-1 animate-scale-in">
+              <div className="absolute right-0 top-11 z-40 w-64 rounded-2xl bg-white border border-slate-200 shadow-2xl p-1.5 space-y-1 animate-scale-in">
                 
-                <div className="px-3 py-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider border-b border-[#1e293b]">
+                <div className="px-3 py-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100">
                   Upravljanje & Opcije
                 </div>
 
@@ -163,16 +163,16 @@ export function Navbar({
                   className={`w-full p-2.5 rounded-xl text-left flex items-center justify-between text-xs font-bold transition-all ${
                     activeTab === 'dashboard'
                       ? 'bg-[#013695] text-white'
-                      : 'text-slate-200 hover:bg-[#151f33]'
+                      : 'text-slate-800 hover:bg-slate-100'
                   }`}
                 >
                   <div className="flex items-center gap-2.5">
-                    <div className="w-7 h-7 rounded-lg bg-[#FC661B]/20 text-[#FC661B] flex items-center justify-center shrink-0">
+                    <div className="w-7 h-7 rounded-lg bg-[#FC661B]/15 text-[#FC661B] flex items-center justify-center shrink-0">
                       <Coins className="w-4 h-4" />
                     </div>
                     <div>
                       <span className="block">Obračun & Financije</span>
-                      <span className="block text-[10px] font-normal text-slate-400">
+                      <span className={`block text-[10px] font-normal ${activeTab === 'dashboard' ? 'text-white/80' : 'text-slate-500'}`}>
                         Zarada i raspodjela timova
                       </span>
                     </div>
@@ -180,7 +180,7 @@ export function Navbar({
                   {activeTab === 'dashboard' ? (
                     <Check className="w-4 h-4 text-white" />
                   ) : (
-                    <ArrowRight className="w-3.5 h-3.5 text-slate-500" />
+                    <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
                   )}
                 </button>
 
@@ -191,20 +191,20 @@ export function Navbar({
                     onOpenImport();
                     setIsManageOpen(false);
                   }}
-                  className="w-full p-2.5 rounded-xl text-left flex items-center justify-between text-xs font-bold text-slate-200 hover:bg-[#151f33] transition-colors"
+                  className="w-full p-2.5 rounded-xl text-left flex items-center justify-between text-xs font-bold text-slate-800 hover:bg-slate-100 transition-colors"
                 >
                   <div className="flex items-center gap-2.5">
-                    <div className="w-7 h-7 rounded-lg bg-[#013695]/30 text-blue-400 flex items-center justify-center shrink-0">
+                    <div className="w-7 h-7 rounded-lg bg-[#013695]/10 text-[#013695] flex items-center justify-center shrink-0">
                       <Upload className="w-4 h-4" />
                     </div>
                     <div>
                       <span className="block">Uvoz gostiju</span>
-                      <span className="block text-[10px] font-normal text-slate-400">
+                      <span className="block text-[10px] font-normal text-slate-500">
                         CSV ili Google Sheet link
                       </span>
                     </div>
                   </div>
-                  <ArrowRight className="w-3.5 h-3.5 text-slate-500" />
+                  <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
                 </button>
 
                 {/* 3. Zaključaj / Otvori event */}
@@ -216,15 +216,15 @@ export function Navbar({
                   }}
                   className={`w-full p-2.5 rounded-xl text-left flex items-center justify-between text-xs font-bold transition-colors ${
                     stats?.isClosed
-                      ? 'text-amber-300 hover:bg-amber-950/30'
-                      : 'text-red-300 hover:bg-red-950/30'
+                      ? 'text-amber-700 hover:bg-amber-50'
+                      : 'text-red-700 hover:bg-red-50'
                   }`}
                 >
                   <div className="flex items-center gap-2.5">
                     <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${
                       stats?.isClosed 
-                        ? 'bg-amber-500/20 text-amber-400' 
-                        : 'bg-red-500/20 text-red-400'
+                        ? 'bg-amber-100 text-amber-700' 
+                        : 'bg-red-100 text-red-700'
                     }`}>
                       {stats?.isClosed ? <Unlock className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
                     </div>
@@ -232,38 +232,38 @@ export function Navbar({
                       <span className="block">
                         {stats?.isClosed ? 'Ponovno otvori event' : 'Zaključi event (Kraj)'}
                       </span>
-                      <span className="block text-[10px] font-normal text-slate-400">
+                      <span className="block text-[10px] font-normal text-slate-500">
                         {stats?.isClosed ? 'Event je trenutno zaključen' : 'Brojanje gotovine & PIN'}
                       </span>
                     </div>
                   </div>
-                  <ArrowRight className="w-3.5 h-3.5 text-slate-500" />
+                  <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
                 </button>
 
-                <div className="border-t border-[#1e293b] pt-1" />
+                <div className="border-t border-slate-100 pt-1" />
 
                 {/* 4. Službeni PDF Izvještaj */}
                 <Link
                   href="/report"
                   target="_blank"
                   onClick={() => setIsManageOpen(false)}
-                  className="w-full p-2.5 rounded-xl text-left flex items-center justify-between text-xs font-bold text-slate-300 hover:text-white hover:bg-[#151f33] transition-colors"
+                  className="w-full p-2.5 rounded-xl text-left flex items-center justify-between text-xs font-bold text-slate-800 hover:bg-slate-100 transition-colors"
                 >
                   <div className="flex items-center gap-2.5">
-                    <div className="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+                    <div className="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
                       <FileText className="w-4 h-4" />
                     </div>
                     <div>
                       <span className="block">Službeni PDF izvještaj</span>
-                      <span className="block text-[10px] font-normal text-slate-400">
+                      <span className="block text-[10px] font-normal text-slate-500">
                         A4 pregled, print & WhatsApp
                       </span>
                     </div>
                   </div>
-                  <ArrowRight className="w-3.5 h-3.5 text-slate-500" />
+                  <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
                 </Link>
 
-                <div className="border-t border-[#1e293b] pt-1" />
+                <div className="border-t border-slate-100 pt-1" />
 
                 {/* 5. Odjava / Zaključaj ekran */}
                 <button
@@ -272,20 +272,20 @@ export function Navbar({
                     setIsManageOpen(false);
                     onLogout();
                   }}
-                  className="w-full p-2.5 rounded-xl text-left flex items-center justify-between text-xs font-bold text-red-400 hover:bg-red-950/30 transition-colors"
+                  className="w-full p-2.5 rounded-xl text-left flex items-center justify-between text-xs font-bold text-red-600 hover:bg-red-50 transition-colors"
                 >
                   <div className="flex items-center gap-2.5">
-                    <div className="w-7 h-7 rounded-lg bg-red-500/20 text-red-400 flex items-center justify-center shrink-0">
+                    <div className="w-7 h-7 rounded-lg bg-red-100 text-red-600 flex items-center justify-center shrink-0">
                       <LogOut className="w-4 h-4" />
                     </div>
                     <div>
                       <span className="block">Odjava (Zaključaj)</span>
-                      <span className="block text-[10px] font-normal text-slate-400">
+                      <span className="block text-[10px] font-normal text-slate-500">
                         Zahtijeva PIN za ponovni ulaz
                       </span>
                     </div>
                   </div>
-                  <ArrowRight className="w-3.5 h-3.5 text-slate-500" />
+                  <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
                 </button>
 
               </div>

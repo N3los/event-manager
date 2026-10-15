@@ -58,7 +58,7 @@ export function GuestDetailsModal({
 
   if (!isOpen || !guest) return null;
 
-  // When team changes, intelligently toggle ticket type if desired
+  // When team changes, intelligently toggle ticket type
   const handleTeamChange = (newTeam: TeamType) => {
     setTeam(newTeam);
     if (newTeam === 'Regularni') {
@@ -120,21 +120,21 @@ export function GuestDetailsModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/80 backdrop-blur-sm animate-fade-in p-0 sm:p-4">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-slate-900/50 backdrop-blur-xs animate-fade-in p-0 sm:p-4">
       <div 
-        className="w-full max-w-lg rounded-t-3xl sm:rounded-2xl bg-[#111827] border border-[#1e293b] p-4 sm:p-6 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto animate-slide-up sm:animate-scale-in"
+        className="w-full max-w-lg rounded-t-3xl sm:rounded-2xl bg-white border border-slate-200 p-4 sm:p-6 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto animate-slide-up sm:animate-scale-in"
       >
         
         {/* Mobile Pull Handle Indicator */}
-        <div className="w-12 h-1.5 bg-slate-700 rounded-full mx-auto sm:hidden mb-1" />
+        <div className="w-12 h-1.5 bg-slate-300 rounded-full mx-auto sm:hidden mb-1" />
 
         {/* Modal Header */}
-        <div className="flex items-center justify-between pb-3 border-b border-[#1e293b]">
+        <div className="flex items-center justify-between pb-3 border-b border-slate-100">
           <div className="flex items-center gap-2.5 flex-1 min-w-0 pr-2">
             <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${
               guest.is_checked_in 
-                ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
-                : 'bg-[#013695]/30 text-blue-300 border border-[#013695]'
+                ? 'bg-emerald-100 text-emerald-700 border border-emerald-300'
+                : 'bg-[#013695]/10 text-[#013695] border border-[#013695]/20'
             }`}>
               {guest.is_checked_in ? <UserCheck className="w-5 h-5" /> : <Tag className="w-5 h-5" />}
             </div>
@@ -142,7 +142,7 @@ export function GuestDetailsModal({
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
                 Detalji gosta #{guest.id}
               </span>
-              <h3 className="text-base sm:text-lg font-extrabold text-white truncate">
+              <h3 className="text-base sm:text-lg font-extrabold text-slate-900 truncate">
                 {name || guest.name}
               </h3>
             </div>
@@ -153,7 +153,7 @@ export function GuestDetailsModal({
               <button
                 type="button"
                 onClick={() => setIsEditing(true)}
-                className="px-3 py-1.5 rounded-lg bg-[#1c2842] hover:bg-[#25334d] border border-slate-700 text-slate-200 text-xs font-bold flex items-center gap-1.5 transition-colors"
+                className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 text-xs font-bold flex items-center gap-1.5 transition-colors"
               >
                 <Edit2 className="w-3.5 h-3.5 text-[#FC661B]" />
                 <span>Uredi</span>
@@ -162,7 +162,6 @@ export function GuestDetailsModal({
               <button
                 type="button"
                 onClick={() => {
-                  // Reset fields back to guest
                   setName(guest.name);
                   setTeam(guest.team);
                   setTicketType(guest.ticket_type);
@@ -171,7 +170,7 @@ export function GuestDetailsModal({
                   setNote(guest.note || '');
                   setIsEditing(false);
                 }}
-                className="text-xs text-slate-400 hover:text-white underline mr-1 font-semibold"
+                className="text-xs text-slate-500 hover:text-slate-800 underline mr-1 font-semibold"
               >
                 Odustani
               </button>
@@ -179,7 +178,7 @@ export function GuestDetailsModal({
 
             <button
               onClick={onClose}
-              className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-[#1f293d]"
+              className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100"
             >
               <X className="w-5 h-5" />
             </button>
@@ -189,14 +188,14 @@ export function GuestDetailsModal({
         {/* Status Callout Banner */}
         <div className={`p-3 rounded-xl border flex items-center justify-between ${
           guest.is_checked_in
-            ? 'bg-emerald-950/30 border-emerald-500/30 text-emerald-300'
-            : 'bg-amber-950/20 border-amber-500/30 text-amber-300'
+            ? 'bg-emerald-50 border-emerald-200 text-emerald-900'
+            : 'bg-amber-50 border-amber-200 text-amber-900'
         }`}>
           <div className="flex items-center gap-2 text-xs">
             {guest.is_checked_in ? (
-              <Check className="w-4 h-4 shrink-0 font-bold" />
+              <Check className="w-4 h-4 shrink-0 font-bold text-emerald-600" />
             ) : (
-              <Clock className="w-4 h-4 shrink-0" />
+              <Clock className="w-4 h-4 shrink-0 text-amber-600" />
             )}
             <div>
               <span className="font-bold">
@@ -209,7 +208,7 @@ export function GuestDetailsModal({
               )}
             </div>
           </div>
-          <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-black/40 border border-white/10">
+          <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-white/80 border border-slate-200 text-slate-700">
             {reservationStatus === 'potvrdjeno' ? 'Potvrđeno' : 'Na čekanju'}
           </span>
         </div>
@@ -217,31 +216,31 @@ export function GuestDetailsModal({
         {/* Form Body - Structured identical to Novi Gost, Pre-populated! */}
         <div className="space-y-3.5">
           
-          {/* Ime i prezime - in edit mode editable, in view mode prominent */}
-          {isEditing ? (
+          {/* Ime i prezime - in edit mode editable */}
+          {isEditing && (
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1">
+              <label className="block text-xs font-semibold text-slate-700 mb-1">
                 Ime i prezime <span className="text-[#FC661B]">*</span>
               </label>
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full h-11 px-3.5 rounded-xl bg-[#151f33] border border-blue-500 text-sm font-bold text-white outline-none"
+                className="w-full h-11 px-3.5 rounded-xl bg-white border border-blue-600 text-sm font-bold text-slate-900 outline-none shadow-xs"
                 autoFocus
               />
             </div>
-          ) : null}
+          )}
 
           {/* Team selector pills (Preko koga dolazi) */}
           <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1.5 flex items-center justify-between">
+            <label className="block text-xs font-semibold text-slate-700 mb-1.5 flex items-center justify-between">
               <span className="flex items-center gap-1">
-                <Tag className="w-3.5 h-3.5 text-slate-400" />
+                <Tag className="w-3.5 h-3.5 text-slate-500" />
                 Kategorija / Preko koga dolazi:
               </span>
               {team !== guest.team && (
-                <span className="text-[10px] text-amber-400 font-bold">Promijenjeno</span>
+                <span className="text-[10px] text-amber-600 font-bold">Promijenjeno</span>
               )}
             </label>
             <div className="grid grid-cols-5 gap-1.5 text-xs">
@@ -253,9 +252,9 @@ export function GuestDetailsModal({
                   onClick={() => handleTeamChange(t)}
                   className={`py-2 px-1 rounded-xl font-bold border transition-all text-center ${
                     team === t
-                      ? 'bg-[#013695] text-white border-[#024ec4] shadow-md shadow-[#013695]/30'
-                      : 'bg-[#151f33] text-slate-400 border-[#1e293b] hover:text-white'
-                  } ${guest.is_checked_in && !isEditing ? 'opacity-80 cursor-default' : ''}`}
+                      ? 'bg-[#013695] text-white border-[#024ec4] shadow-md shadow-[#013695]/20'
+                      : 'bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200 hover:text-slate-900'
+                  } ${guest.is_checked_in && !isEditing ? 'opacity-70 cursor-default' : ''}`}
                 >
                   {t}
                 </button>
@@ -265,10 +264,10 @@ export function GuestDetailsModal({
 
           {/* Ticket Type Toggle */}
           <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1.5 flex items-center justify-between">
+            <label className="block text-xs font-semibold text-slate-700 mb-1.5 flex items-center justify-between">
               <span>Vrsta ulaznice:</span>
               {ticketType !== guest.ticket_type && (
-                <span className="text-[10px] text-amber-400 font-bold">Promijenjeno</span>
+                <span className="text-[10px] text-amber-600 font-bold">Promijenjeno</span>
               )}
             </label>
             <div className="grid grid-cols-2 gap-2 text-xs">
@@ -278,9 +277,9 @@ export function GuestDetailsModal({
                 onClick={() => setTicketType('placa')}
                 className={`py-2.5 px-3 rounded-xl font-bold border flex items-center justify-center gap-1.5 transition-all ${
                   ticketType === 'placa'
-                    ? 'bg-emerald-600/25 text-emerald-300 border-emerald-500/50 shadow-sm'
-                    : 'bg-[#151f33] text-slate-400 border-[#1e293b]'
-                } ${guest.is_checked_in && !isEditing ? 'opacity-80 cursor-default' : ''}`}
+                    ? 'bg-emerald-600 text-white border-emerald-700 shadow-sm'
+                    : 'bg-slate-100 text-slate-600 border-slate-200 hover:bg-slate-200'
+                } ${guest.is_checked_in && !isEditing ? 'opacity-70 cursor-default' : ''}`}
               >
                 <span>Plaća 39 € (Ulaznica)</span>
               </button>
@@ -290,9 +289,9 @@ export function GuestDetailsModal({
                 onClick={() => setTicketType('gratis')}
                 className={`py-2.5 px-3 rounded-xl font-bold border flex items-center justify-center gap-1.5 transition-all ${
                   ticketType === 'gratis'
-                    ? 'bg-blue-600/25 text-blue-300 border-blue-500/50 shadow-sm'
-                    : 'bg-[#151f33] text-slate-400 border-[#1e293b]'
-                } ${guest.is_checked_in && !isEditing ? 'opacity-80 cursor-default' : ''}`}
+                    ? 'bg-[#013695] text-white border-[#024ec4] shadow-sm'
+                    : 'bg-slate-100 text-slate-600 border-slate-200 hover:bg-slate-200'
+                } ${guest.is_checked_in && !isEditing ? 'opacity-70 cursor-default' : ''}`}
               >
                 <span>Gratis 0 € (Besplatno)</span>
               </button>
@@ -302,8 +301,8 @@ export function GuestDetailsModal({
           {/* Table & Note in 2 columns */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1 flex items-center gap-1">
-                <MapPin className="w-3.5 h-3.5 text-slate-400" />
+              <label className="block text-xs font-semibold text-slate-700 mb-1 flex items-center gap-1">
+                <MapPin className="w-3.5 h-3.5 text-slate-500" />
                 Stol:
               </label>
               {isEditing ? (
@@ -314,7 +313,7 @@ export function GuestDetailsModal({
                     value={tableName}
                     onChange={(e) => setTableName(e.target.value)}
                     placeholder="npr. Stol 1"
-                    className="w-full h-10 px-3 rounded-xl bg-[#151f33] border border-[#1e293b] text-xs text-white placeholder-slate-500 outline-none focus:border-blue-500"
+                    className="w-full h-10 px-3 rounded-xl bg-white border border-slate-300 text-xs text-slate-900 placeholder-slate-400 outline-none focus:border-[#013695]"
                   />
                   <datalist id="modal-table-options">
                     {existingTables.map((t) => (
@@ -323,7 +322,7 @@ export function GuestDetailsModal({
                   </datalist>
                 </>
               ) : (
-                <div className="h-10 px-3 rounded-xl bg-[#151f33] border border-[#1e293b] flex items-center">
+                <div className="h-10 px-3 rounded-xl bg-slate-100 border border-slate-200 flex items-center">
                   <span className="text-xs font-bold text-[#FC661B]">
                     {tableName || 'Bez stola (Stajanje)'}
                   </span>
@@ -332,8 +331,8 @@ export function GuestDetailsModal({
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1 flex items-center gap-1">
-                <MessageSquare className="w-3.5 h-3.5 text-slate-400" />
+              <label className="block text-xs font-semibold text-slate-700 mb-1 flex items-center gap-1">
+                <MessageSquare className="w-3.5 h-3.5 text-slate-500" />
                 Napomena:
               </label>
               {isEditing ? (
@@ -342,11 +341,11 @@ export function GuestDetailsModal({
                   value={note}
                   onChange={(e) => setNote(e.target.value)}
                   placeholder="npr. Fotograf, popust..."
-                  className="w-full h-10 px-3 rounded-xl bg-[#151f33] border border-[#1e293b] text-xs text-white placeholder-slate-500 outline-none focus:border-blue-500"
+                  className="w-full h-10 px-3 rounded-xl bg-white border border-slate-300 text-xs text-slate-900 placeholder-slate-400 outline-none focus:border-[#013695]"
                 />
               ) : (
-                <div className="h-10 px-3 rounded-xl bg-[#151f33] border border-[#1e293b] flex items-center truncate">
-                  <span className="text-xs italic text-amber-200 truncate">
+                <div className="h-10 px-3 rounded-xl bg-slate-100 border border-slate-200 flex items-center truncate">
+                  <span className="text-xs italic text-slate-700 truncate">
                     {note || 'Nema napomene'}
                   </span>
                 </div>
@@ -357,13 +356,13 @@ export function GuestDetailsModal({
           {/* In Edit mode, show reservation status selector too */}
           {isEditing && (
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1">
+              <label className="block text-xs font-semibold text-slate-700 mb-1">
                 Status rezervacije:
               </label>
               <select
                 value={reservationStatus}
                 onChange={(e) => setReservationStatus(e.target.value as ReservationStatus)}
-                className="w-full h-10 px-3 rounded-xl bg-[#151f33] border border-[#1e293b] text-xs text-white outline-none focus:border-blue-500"
+                className="w-full h-10 px-3 rounded-xl bg-white border border-slate-300 text-xs text-slate-900 outline-none focus:border-[#013695]"
               >
                 <option value="potvrdjeno">Potvrđeno</option>
                 <option value="na_cekanju">Na čekanju</option>
@@ -374,7 +373,7 @@ export function GuestDetailsModal({
         </div>
 
         {/* Bottom Actions Area */}
-        <div className="pt-3 border-t border-[#1e293b]">
+        <div className="pt-3 border-t border-slate-100">
           {isEditing ? (
             /* Edit Mode Actions: Delete + Save */
             <div className="flex items-center justify-between gap-2">
@@ -382,7 +381,7 @@ export function GuestDetailsModal({
                 <button
                   type="button"
                   onClick={() => setShowDeleteConfirm(true)}
-                  className="h-11 px-3.5 rounded-xl bg-red-950/30 hover:bg-red-900/50 text-red-400 border border-red-500/30 text-xs font-bold flex items-center gap-1.5 transition-colors"
+                  className="h-11 px-3.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-xs font-bold flex items-center gap-1.5 transition-colors"
                 >
                   <Trash2 className="w-4 h-4" />
                   <span>Obriši gosta</span>
@@ -393,14 +392,14 @@ export function GuestDetailsModal({
                     type="button"
                     onClick={handleDelete}
                     disabled={isSubmitting}
-                    className="h-11 px-3 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs"
+                    className="h-11 px-3 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs"
                   >
                     Potvrdi brisanje
                   </button>
                   <button
                     type="button"
                     onClick={() => setShowDeleteConfirm(false)}
-                    className="h-11 px-2.5 rounded-xl bg-slate-700 text-slate-300 text-xs font-semibold"
+                    className="h-11 px-2.5 rounded-xl bg-slate-200 text-slate-700 text-xs font-semibold"
                   >
                     Odustani
                   </button>
@@ -411,7 +410,7 @@ export function GuestDetailsModal({
                 type="button"
                 disabled={isSubmitting || !name.trim()}
                 onClick={handleSaveEdit}
-                className="flex-1 max-w-[200px] h-11 px-4 rounded-xl bg-[#013695] hover:bg-[#024ec4] disabled:opacity-50 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-[#013695]/30 transition-all active:scale-[0.98]"
+                className="flex-1 max-w-[200px] h-11 px-4 rounded-xl bg-[#013695] hover:bg-[#024ec4] disabled:opacity-50 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md shadow-[#013695]/20 transition-all active:scale-[0.98]"
               >
                 <Save className="w-4 h-4" />
                 <span>{isSubmitting ? 'Spremam...' : 'Spremi promjene'}</span>
@@ -426,10 +425,10 @@ export function GuestDetailsModal({
                   type="button"
                   disabled={isSubmitting}
                   onClick={handleConfirmCheckIn}
-                  className={`w-full h-14 rounded-2xl text-white font-extrabold text-sm sm:text-base flex items-center justify-center gap-2 shadow-xl transition-all active:scale-[0.98] ${
+                  className={`w-full h-14 rounded-2xl text-white font-extrabold text-sm sm:text-base flex items-center justify-center gap-2 shadow-lg transition-all active:scale-[0.98] ${
                     ticketType === 'placa'
-                      ? 'bg-emerald-600 hover:bg-emerald-500 shadow-emerald-600/30 border border-emerald-400/40'
-                      : 'bg-[#013695] hover:bg-[#024ec4] shadow-[#013695]/40 border border-[#024ec4]/50'
+                      ? 'bg-emerald-600 hover:bg-emerald-500 shadow-emerald-600/25 border border-emerald-500'
+                      : 'bg-[#013695] hover:bg-[#024ec4] shadow-[#013695]/30 border border-[#024ec4]'
                   }`}
                 >
                   <Check className="w-5 h-5 stroke-[3]" />
@@ -446,14 +445,14 @@ export function GuestDetailsModal({
                     <button
                       type="button"
                       onClick={() => setShowUndoConfirm(true)}
-                      className="w-full h-12 rounded-xl bg-[#1c2842] hover:bg-red-950/40 border border-slate-700 hover:border-red-500/50 text-slate-300 hover:text-red-300 font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all active:scale-[0.98]"
+                      className="w-full h-12 rounded-xl bg-slate-100 hover:bg-red-50 border border-slate-200 hover:border-red-200 text-slate-700 hover:text-red-600 font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all active:scale-[0.98]"
                     >
                       <RotateCcw className="w-4 h-4" />
                       <span>VRATI GOSTA / PONIŠTI DOLAZAK (STORNO)</span>
                     </button>
                   ) : (
-                    <div className="p-3 rounded-xl bg-red-950/40 border border-red-500/40 space-y-2 text-center animate-fade-in">
-                      <p className="text-xs font-bold text-red-200">
+                    <div className="p-3 rounded-xl bg-red-50 border border-red-200 space-y-2 text-center animate-fade-in">
+                      <p className="text-xs font-bold text-red-800">
                         Sigurno želiš poništiti dolazak i stornirati narukvicu?
                       </p>
                       <div className="flex gap-2">
@@ -461,14 +460,14 @@ export function GuestDetailsModal({
                           type="button"
                           disabled={isSubmitting}
                           onClick={handleConfirmUndo}
-                          className="flex-1 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs transition-colors"
+                          className="flex-1 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs transition-colors"
                         >
                           {isSubmitting ? 'Poništavam...' : 'Da, storniraj'}
                         </button>
                         <button
                           type="button"
                           onClick={() => setShowUndoConfirm(false)}
-                          className="flex-1 py-2.5 rounded-xl bg-slate-700 text-slate-200 font-semibold text-xs transition-colors"
+                          className="flex-1 py-2.5 rounded-xl bg-slate-200 text-slate-700 font-semibold text-xs transition-colors"
                         >
                           Odustani
                         </button>

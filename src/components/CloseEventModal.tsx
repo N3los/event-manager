@@ -70,23 +70,23 @@ export function CloseEventModal({
   const checkedInList = guests.filter(g => g.is_checked_in);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-fade-in overflow-y-auto">
-      <div className="w-full max-w-2xl rounded-2xl bg-[#111827] border border-[#1e293b] p-4 sm:p-6 shadow-2xl space-y-5 my-auto max-h-[95vh] overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/40 backdrop-blur-xs animate-fade-in overflow-y-auto">
+      <div className="w-full max-w-2xl rounded-2xl bg-white border border-slate-200 p-4 sm:p-6 shadow-2xl space-y-5 my-auto max-h-[95vh] overflow-y-auto">
         
         {/* Header */}
-        <div className="flex items-center justify-between pb-3 border-b border-[#1e293b]">
+        <div className="flex items-center justify-between pb-3 border-b border-slate-100">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-red-500/20 border border-red-500/40 flex items-center justify-center">
-              <Lock className="w-4 h-4 text-red-400" />
+            <div className="w-8 h-8 rounded-lg bg-red-50 border border-red-200 flex items-center justify-center">
+              <Lock className="w-4 h-4 text-red-600" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-white">
+              <h3 className="text-base font-bold text-slate-900">
                 {stats.isClosed ? 'Event je zaključen' : 'Zaključi event & Blagajna'}
               </h3>
-              <p className="text-[11px] text-slate-400">Usporedba evidencije i prebrojane gotovine</p>
+              <p className="text-[11px] text-slate-500">Usporedba evidencije i prebrojane gotovine</p>
             </div>
           </div>
-          <button onClick={onClose} className="p-1 rounded-lg text-slate-400 hover:text-white">
+          <button onClick={onClose} className="p-1 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100">
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -94,14 +94,14 @@ export function CloseEventModal({
         {/* If event is already closed, show Summary & Print Action */}
         {stats.isClosed ? (
           <div className="space-y-4">
-            <div className="p-4 rounded-xl bg-emerald-950/30 border border-emerald-500/30 flex items-center gap-3">
-              <CheckCircle className="w-6 h-6 text-emerald-400 shrink-0" />
+            <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center gap-3">
+              <CheckCircle className="w-6 h-6 text-emerald-600 shrink-0" />
               <div className="text-xs">
-                <p className="font-bold text-emerald-300">Party je uspješno zaključen!</p>
-                <p className="text-slate-300">
-                  Prebrojana gotovina: <strong className="text-white">{stats.actualCashCounted} €</strong>{' '}
+                <p className="font-bold text-emerald-900">Party je uspješno zaključen!</p>
+                <p className="text-slate-700 mt-0.5">
+                  Prebrojana gotovina: <strong className="text-slate-950 font-bold">{stats.actualCashCounted} €</strong>{' '}
                   {stats.cashDifference !== 0 && (
-                    <span className={stats.cashDifference! > 0 ? 'text-blue-400' : 'text-red-400'}>
+                    <span className={stats.cashDifference! > 0 ? 'text-blue-700 font-semibold' : 'text-red-700 font-semibold'}>
                       (Razlika: {stats.cashDifference! > 0 ? `+${stats.cashDifference}` : stats.cashDifference} €)
                     </span>
                   )}
@@ -115,7 +115,7 @@ export function CloseEventModal({
                 href="/report"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full h-12 rounded-xl bg-[#FC661B] hover:bg-[#e5530b] text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-[#FC661B]/30 transition-all"
+                className="w-full h-12 rounded-xl bg-[#FC661B] hover:bg-[#e5530b] text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md shadow-[#FC661B]/25 transition-all"
               >
                 <FileText className="w-4 h-4" />
                 <span>OTVORI SLUŽBENI PDF IZVJEŠTAJ (A4)</span>
@@ -125,7 +125,7 @@ export function CloseEventModal({
                 <button
                   type="button"
                   onClick={handlePrint}
-                  className="flex-1 h-10 rounded-xl bg-[#013695] hover:bg-[#024ec4] text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-all"
+                  className="flex-1 h-10 rounded-xl bg-[#013695] hover:bg-[#024ec4] text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-xs"
                 >
                   <Printer className="w-3.5 h-3.5" />
                   <span>Brzi ispis</span>
@@ -148,7 +148,7 @@ export function CloseEventModal({
                     navigator.clipboard.writeText(text);
                     alert('Sažetak je kopiran u međuspremnik za WhatsApp!');
                   }}
-                  className="flex-1 h-10 rounded-xl bg-emerald-700 hover:bg-emerald-600 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-all"
+                  className="flex-1 h-10 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-xs"
                 >
                   <span>Kopiraj za WhatsApp</span>
                 </button>
@@ -156,12 +156,12 @@ export function CloseEventModal({
             </div>
 
             {/* Reopen option */}
-            <div className="pt-3 border-t border-[#1e293b] flex items-center justify-between text-xs">
-              <span className="text-slate-400">Ako trebaš naknadno nešto ispraviti:</span>
+            <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+              <span className="text-slate-500">Ako trebaš naknadno nešto ispraviti:</span>
               <button
                 onClick={handleReopen}
                 disabled={isSubmitting}
-                className="px-3 py-1.5 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/30 text-amber-300 font-semibold transition-colors"
+                className="px-3 py-1.5 rounded-lg bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-800 font-semibold transition-colors"
               >
                 Ponovno otvori event
               </button>
@@ -173,16 +173,16 @@ export function CloseEventModal({
             
             {/* Cash comparison inputs */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-              <div className="p-3.5 rounded-xl bg-[#151f33] border border-[#1e293b]">
-                <span className="text-slate-400 block mb-1">Teorijska gotovina po evidenciji:</span>
-                <span className="text-2xl font-black text-white">{stats.totalCashExpected} €</span>
+              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+                <span className="text-slate-500 block mb-1">Teorijska gotovina po evidenciji:</span>
+                <span className="text-2xl font-black text-slate-900">{stats.totalCashExpected} €</span>
                 <span className="text-[11px] text-slate-500 block mt-0.5">
                   {stats.paidGuests} plaćenih ulaznica × 39 €
                 </span>
               </div>
 
-              <div className="p-3.5 rounded-xl bg-[#0c1220] border border-[#013695]/60">
-                <label className="text-slate-300 font-semibold block mb-1 flex items-center gap-1">
+              <div className="p-3.5 rounded-xl bg-blue-50/40 border border-blue-200">
+                <label className="text-slate-700 font-semibold block mb-1 flex items-center gap-1">
                   <Coins className="w-3.5 h-3.5 text-[#FC661B]" />
                   Stvarno prebrojano u blagajni (€):
                 </label>
@@ -191,7 +191,7 @@ export function CloseEventModal({
                   value={actualCashInput}
                   onChange={(e) => setActualCashInput(e.target.value)}
                   placeholder="0.00"
-                  className="w-full h-10 px-3 rounded-lg bg-[#151f33] border border-slate-700 text-lg font-bold text-white outline-none focus:border-[#FC661B]"
+                  className="w-full h-10 px-3 rounded-lg bg-white border border-slate-300 text-lg font-bold text-slate-900 outline-none focus:border-[#FC661B]"
                 />
               </div>
             </div>
@@ -201,8 +201,8 @@ export function CloseEventModal({
               <div
                 className={`p-3 rounded-xl border text-xs flex items-center justify-between ${
                   difference < 0
-                    ? 'bg-red-950/30 border-red-500/40 text-red-300'
-                    : 'bg-blue-950/30 border-blue-500/40 text-blue-300'
+                    ? 'bg-red-50 border-red-200 text-red-800'
+                    : 'bg-blue-50 border-blue-200 text-blue-800'
                 }`}
               >
                 <div className="flex items-center gap-2">
@@ -212,66 +212,66 @@ export function CloseEventModal({
                     <strong>{difference > 0 ? `+${difference}` : difference} €</strong>
                   </span>
                 </div>
-                <span className="text-[11px] opacity-80">
+                <span className="text-[11px] opacity-90">
                   {difference < 0
                     ? `Nedostaje cca ${Math.abs(Math.round(difference / 39))} ulaznica`
                     : 'Višak u blagajni'}
                 </span>
               </div>
             ) : (
-              <div className="p-2.5 rounded-xl bg-emerald-950/30 border border-emerald-500/30 text-emerald-300 text-xs flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 shrink-0" />
+              <div className="p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 shrink-0 text-emerald-600" />
                 <span>Blagajna je u savršenom balansu (0.00 € razlike)!</span>
               </div>
             )}
 
             {/* Payout Preview */}
-            <div className="p-3 rounded-xl bg-[#151f33] border border-[#1e293b] text-xs space-y-1.5">
-              <span className="font-bold text-slate-300 block mb-1">Konačna raspodjela novca:</span>
-              <div className="flex justify-between text-slate-300">
+            <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs space-y-1.5">
+              <span className="font-bold text-slate-700 block mb-1">Konačna raspodjela novca:</span>
+              <div className="flex justify-between text-slate-700">
                 <span>Ugostiteljstvo (Dupli & Silvaši):</span>
-                <strong className="text-emerald-400 text-sm font-bold">{stats.cateringNet} €</strong>
+                <strong className="text-emerald-700 text-sm font-bold">{stats.cateringNet} €</strong>
               </div>
-              <div className="flex justify-between text-slate-300">
+              <div className="flex justify-between text-slate-700">
                 <span>Organizacija (Ela & Joe):</span>
-                <strong className="text-emerald-400 text-sm font-bold">{stats.orgNet} €</strong>
+                <strong className="text-emerald-700 text-sm font-bold">{stats.orgNet} €</strong>
               </div>
             </div>
 
             {/* PIN & Notes */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
               <div>
-                <label className="text-slate-400 block mb-1">Zaštitni PIN (default: 1234):</label>
+                <label className="text-slate-600 block mb-1">Zaštitni PIN (default: 1234):</label>
                 <input
                   type="password"
                   value={pin}
                   onChange={(e) => setPin(e.target.value)}
-                  className="w-full h-9 px-3 rounded-lg bg-[#151f33] border border-[#1e293b] text-white font-mono text-center tracking-widest outline-none focus:border-blue-500"
+                  className="w-full h-9 px-3 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 font-mono text-center tracking-widest outline-none focus:border-blue-500"
                 />
               </div>
 
               <div>
-                <label className="text-slate-400 block mb-1">Završna napomena (opcionalno):</label>
+                <label className="text-slate-600 block mb-1">Završna napomena (opcionalno):</label>
                 <input
                   type="text"
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
                   placeholder="npr. Manjak dogovorno podijeljen..."
-                  className="w-full h-9 px-3 rounded-lg bg-[#151f33] border border-[#1e293b] text-white outline-none focus:border-blue-500 text-xs"
+                  className="w-full h-9 px-3 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 outline-none focus:border-blue-500 text-xs placeholder-slate-400"
                 />
               </div>
             </div>
 
             {error && (
-              <p className="text-xs text-red-400 font-semibold">{error}</p>
+              <p className="text-xs text-red-600 font-semibold">{error}</p>
             )}
 
             {/* Close Button */}
-            <div className="pt-2 border-t border-[#1e293b] flex items-center justify-end gap-2">
+            <div className="pt-2 border-t border-slate-100 flex items-center justify-end gap-2">
               <button
                 type="button"
                 onClick={onClose}
-                className="px-4 py-2 rounded-xl bg-[#1c2842] text-slate-300 hover:text-white text-xs font-semibold"
+                className="px-4 py-2 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 text-xs font-semibold"
               >
                 Odustani
               </button>
@@ -280,7 +280,7 @@ export function CloseEventModal({
                 type="button"
                 disabled={isSubmitting}
                 onClick={handleClose}
-                className="px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 disabled:opacity-50 text-white text-xs font-bold shadow-lg shadow-red-600/30 transition-all flex items-center gap-1.5"
+                className="px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 disabled:opacity-50 text-white text-xs font-bold shadow-md shadow-red-600/20 transition-all flex items-center gap-1.5"
               >
                 <Lock className="w-3.5 h-3.5" />
                 <span>{isSubmitting ? 'Zaključavam...' : 'ZAKLJUČI EVENT'}</span>
