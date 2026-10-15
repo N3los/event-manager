@@ -5,20 +5,37 @@ import os from 'os';
 import { Guest, EventMeta, TeamType, TicketType, ReservationStatus } from './types';
 
 // Detect whether Neon / Postgres connection string is configured
-const connectionString =
-  process.env.DATABASE_URL ||
-  process.env.DATABASE_URL_UNPOOLED ||
-  process.env.POSTGRES_URL ||
-  process.env.POSTGRES_PRISMA_URL ||
-  process.env.NEON_DATABASE_URL ||
-  '';
-const isNeonConfigured = Boolean(
-  connectionString &&
-  (connectionString.startsWith('postgres://') || connectionString.startsWith('postgresql://'))
-);
+function getValidPostgresConnection(): { url: string; envName: string } | null {
+  const candidates = [
+    { name: 'POSTGRES_URL', val: process.env.POSTGRES_URL },
+    { name: 'POSTGRES_URL_NON_POOLING', val: process.env.POSTGRES_URL_NON_POOLING },
+    { name: 'DATABASE_URL_UNPOOLED', val: process.env.DATABASE_URL_UNPOOLED },
+    { name: 'NEON_DATABASE_URL', val: process.env.NEON_DATABASE_URL },
+    { name: 'POSTGRES_PRISMA_URL', val: process.env.POSTGRES_PRISMA_URL },
+    { name: 'DATABASE_URL', val: process.env.DATABASE_URL },
+  ];
+
+  for (const c of candidates) {
+    const v = c.val?.trim();
+    if (
+      v &&
+      (v.startsWith('postgres://') || v.startsWith('postgresql://')) &&
+      !v.includes('@host') &&
+      !v.includes('user:password') &&
+      !v.includes('placeholder')
+    ) {
+      return { url: v, envName: c.name };
+    }
+  }
+  return null;
+}
+
+const activeDbConfig = getValidPostgresConnection();
+const connectionString = activeDbConfig?.url || '';
+const isNeonConfigured = Boolean(activeDbConfig !== null);
 
 let pool: Pool | null = null;
-if (isNeonConfigured) {
+if (isNeonConfigured && connectionString) {
   try {
     pool = new Pool({ connectionString });
   } catch (err) {
@@ -670,19 +687,19 @@ export async function getDatabaseStatus(): Promise<{
   pgVersion?: string;
   guestCount: number;
   isWritable: boolean;
+  availableEnvVars: string[];
   error?: string;
 }> {
-  let detectedEnvVar: string | null = null;
-  if (process.env.DATABASE_URL) detectedEnvVar = 'DATABASE_URL';
-  else if (process.env.DATABASE_URL_UNPOOLED) detectedEnvVar = 'DATABASE_URL_UNPOOLED';
-  else if (process.env.POSTGRES_URL) detectedEnvVar = 'POSTGRES_URL';
-  else if (process.env.POSTGRES_PRISMA_URL) detectedEnvVar = 'POSTGRES_PRISMA_URL';
-  else if (process.env.NEON_DATABASE_URL) detectedEnvVar = 'NEON_DATABASE_URL';
+  const availableEnvVars: string[] = [];
+  ['POSTGRES_URL', 'POSTGRES_URL_NON_POOLING', 'DATABASE_URL_UNPOOLED', 'NEON_DATABASE_URL', 'POSTGRES_PRISMA_URL', 'DATABASE_URL'].forEach(k => {
+    if (process.env[k]) availableEnvVars.push(k);
+  });
 
+  const validConfig = getValidPostgresConnection();
   let neonHost: string | null = null;
-  if (connectionString) {
+  if (validConfig?.url) {
     try {
-      const u = new URL(connectionString);
+      const u = new URL(validConfig.url);
       neonHost = u.host;
     } catch {}
   }
@@ -690,27 +707,30 @@ export async function getDatabaseStatus(): Promise<{
   if (pool) {
     try {
       await initDb();
+      if (!pool) throw new Error('Pool could not be initialized with connection string');
       const res = await pool.query('SELECT NOW() as db_time, current_database() as db_name, version() as pg_version');
       const countRes = await pool.query('SELECT count(*)::int as count FROM guests');
       return {
         backend: 'neon-postgres',
         isNeonConfigured: true,
-        detectedEnvVar,
+        detectedEnvVar: validConfig?.envName || null,
         neonHost,
         dbName: res.rows[0]?.db_name,
         serverTime: res.rows[0]?.db_time ? new Date(res.rows[0].db_time).toISOString() : undefined,
         pgVersion: res.rows[0]?.pg_version,
         guestCount: countRes.rows[0]?.count || 0,
         isWritable: true,
+        availableEnvVars,
       };
     } catch (err: any) {
       return {
         backend: 'local-store',
         isNeonConfigured: true,
-        detectedEnvVar,
+        detectedEnvVar: validConfig?.envName || null,
         neonHost,
         guestCount: getLocalStore().guests.length,
         isWritable: true,
+        availableEnvVars,
         error: err.message,
       };
     }
@@ -719,10 +739,11 @@ export async function getDatabaseStatus(): Promise<{
   return {
     backend: 'local-store',
     isNeonConfigured: false,
-    detectedEnvVar: null,
-    neonHost: null,
+    detectedEnvVar: validConfig?.envName || null,
+    neonHost,
     guestCount: getLocalStore().guests.length,
     isWritable: true,
+    availableEnvVars,
   };
 }
 
