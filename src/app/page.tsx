@@ -71,7 +71,24 @@ export default function HomePage() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [justRefreshed, setJustRefreshed] = useState(false);
 
-  // Fetch data
+  // Load cached data from localStorage immediately on mount for instant UI
+  useEffect(() => {
+    try {
+      const cached = localStorage.getItem('pd_cached_guests');
+      const cachedMeta = localStorage.getItem('pd_cached_meta');
+      const cachedStats = localStorage.getItem('pd_cached_stats');
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setGuests(parsed);
+        }
+      }
+      if (cachedMeta) setMeta(JSON.parse(cachedMeta));
+      if (cachedStats) setStats(JSON.parse(cachedStats));
+    } catch {}
+  }, []);
+
+  // Fetch data from server
   const fetchData = useCallback(async () => {
     setIsLoading(true);
     try {
@@ -81,6 +98,11 @@ export default function HomePage() {
         setGuests(data.guests);
         setMeta(data.meta);
         setStats(data.stats);
+        try {
+          localStorage.setItem('pd_cached_guests', JSON.stringify(data.guests));
+          localStorage.setItem('pd_cached_meta', JSON.stringify(data.meta));
+          localStorage.setItem('pd_cached_stats', JSON.stringify(data.stats));
+        } catch {}
       }
     } catch (err) {
       console.error('Failed to fetch data:', err);

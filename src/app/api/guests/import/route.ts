@@ -30,11 +30,17 @@ function parseCsv(csvText: string) {
   const headers = parseCsvLine(headerLine, delimiter).map(h => h.trim().toLowerCase());
 
   // Find column indices
-  let nameIdx = headers.findIndex(h => h.includes('ime') || h.includes('name'));
-  let teamIdx = headers.findIndex(h => h.includes('preko') || h.includes('tim') || h.includes('team') || h.includes('kategorij'));
-  let ticketIdx = headers.findIndex(h => h.includes('ulaznic') || h.includes('ticket') || h.includes('placa') || h.includes('cijena'));
+  let nameIdx = headers.findIndex(h => h === 'ime i prezime' || h === 'ime' || h.includes('name'));
+  if (nameIdx === -1) nameIdx = headers.findIndex(h => h.includes('ime'));
+  if (nameIdx === -1) nameIdx = 0;
+
+  let teamIdx = headers.findIndex(h => h === 'rezervacija preko' || h.includes('preko') || h.includes('tim') || h.includes('team') || h.includes('kategorij'));
+
+  let ticketIdx = headers.findIndex(h => h.includes('ulaznic') || h.includes('ticket'));
+  if (ticketIdx === -1) ticketIdx = headers.findIndex(h => h.includes('placa') || h.includes('cijena'));
+
   let tableIdx = headers.findIndex(h => h.includes('stol') || h.includes('table'));
-  let resIdx = headers.findIndex(h => h.includes('rezervacij') || h.includes('status'));
+  let resIdx = headers.findIndex((h, i) => i !== teamIdx && (h === 'rezervacija' || h.includes('status') || h.includes('rezervacij')));
   let noteIdx = headers.findIndex(h => h.includes('napomen') || h.includes('note'));
 
   // If no "Ime" header found, assume column 0 is name

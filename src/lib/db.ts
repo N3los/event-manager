@@ -1,6 +1,7 @@
 import { Pool } from '@neondatabase/serverless';
 import fs from 'fs';
 import path from 'path';
+import os from 'os';
 import { Guest, EventMeta, TeamType, TicketType, ReservationStatus } from './types';
 
 // Detect whether Neon connection string is configured
@@ -16,9 +17,29 @@ if (isNeonConfigured) {
   }
 }
 
-// Local fallback store path
-const DATA_DIR = path.join(process.cwd(), '.data');
-const STORE_PATH = path.join(DATA_DIR, 'store.json');
+// Fallback storage path detection:
+// In local dev, use process.cwd()/.data
+// In serverless (Vercel, AWS Lambda), process.cwd() is /var/task (read-only), so use os.tmpdir() (/tmp)
+function getWritableStorePath(): { dir: string; file: string } {
+  const isServerless = Boolean(
+    process.env.VERCEL || 
+    process.env.AWS_LAMBDA_FUNCTION_NAME || 
+    (typeof process.cwd === 'function' && (process.cwd().includes('/var/task') || process.cwd().startsWith('/var/')))
+  );
+
+  if (isServerless) {
+    const tmpDir = path.join(os.tmpdir(), 'event-calculator-data');
+    return { dir: tmpDir, file: path.join(tmpDir, 'store.json') };
+  }
+
+  try {
+    const localDir = path.join(process.cwd(), '.data');
+    return { dir: localDir, file: path.join(localDir, 'store.json') };
+  } catch {
+    const fallbackDir = path.join(os.tmpdir(), 'event-calculator-data');
+    return { dir: fallbackDir, file: path.join(fallbackDir, 'store.json') };
+  }
+}
 
 interface LocalStore {
   meta: EventMeta;
@@ -38,32 +59,69 @@ const defaultMeta: EventMeta = {
   closed_notes: null,
 };
 
+declare global {
+  var __pdStore: LocalStore | undefined;
+}
+
 function getLocalStore(): LocalStore {
-  if (!fs.existsSync(DATA_DIR)) {
-    fs.mkdirSync(DATA_DIR, { recursive: true });
+  // 1. Fast in-memory cache check
+  if (globalThis.__pdStore && Array.isArray(globalThis.__pdStore.guests)) {
+    return globalThis.__pdStore;
   }
-  if (!fs.existsSync(STORE_PATH)) {
-    const initial: LocalStore = {
-      meta: defaultMeta,
-      guests: [],
-      nextId: 1,
-    };
-    fs.writeFileSync(STORE_PATH, JSON.stringify(initial, null, 2), 'utf-8');
-    return initial;
-  }
+
+  const { dir, file } = getWritableStorePath();
+
+  // 2. Try reading from disk (/tmp or .data)
   try {
-    const data = fs.readFileSync(STORE_PATH, 'utf-8');
-    return JSON.parse(data);
-  } catch {
-    return { meta: defaultMeta, guests: [], nextId: 1 };
+    if (!fs.existsSync(/*turbopackIgnore: true*/ dir)) {
+      fs.mkdirSync(/*turbopackIgnore: true*/ dir, { recursive: true });
+    }
+    if (fs.existsSync(/*turbopackIgnore: true*/ file)) {
+      const data = fs.readFileSync(/*turbopackIgnore: true*/ file, 'utf-8');
+      const parsed = JSON.parse(data);
+      if (parsed && Array.isArray(parsed.guests)) {
+        globalThis.__pdStore = parsed;
+        return parsed;
+      }
+    }
+  } catch (err) {
+    console.warn('File read from store failed, falling back to in-memory:', err);
   }
+
+  // 3. Fallback to default initial
+  const initial: LocalStore = {
+    meta: defaultMeta,
+    guests: [],
+    nextId: 1,
+  };
+  globalThis.__pdStore = initial;
+
+  // 4. Try saving initial to disk safely without throwing
+  try {
+    if (!fs.existsSync(/*turbopackIgnore: true*/ dir)) {
+      fs.mkdirSync(/*turbopackIgnore: true*/ dir, { recursive: true });
+    }
+    fs.writeFileSync(/*turbopackIgnore: true*/ file, JSON.stringify(initial, null, 2), 'utf-8');
+  } catch (err) {
+    console.warn('File write to store failed, kept in memory:', err);
+  }
+
+  return initial;
 }
 
 function saveLocalStore(store: LocalStore) {
-  if (!fs.existsSync(DATA_DIR)) {
-    fs.mkdirSync(DATA_DIR, { recursive: true });
+  // Always update in-memory global
+  globalThis.__pdStore = store;
+
+  const { dir, file } = getWritableStorePath();
+  try {
+    if (!fs.existsSync(/*turbopackIgnore: true*/ dir)) {
+      fs.mkdirSync(/*turbopackIgnore: true*/ dir, { recursive: true });
+    }
+    fs.writeFileSync(/*turbopackIgnore: true*/ file, JSON.stringify(store, null, 2), 'utf-8');
+  } catch (err) {
+    console.warn('File write to store failed, kept in memory:', err);
   }
-  fs.writeFileSync(STORE_PATH, JSON.stringify(store, null, 2), 'utf-8');
 }
 
 /**
