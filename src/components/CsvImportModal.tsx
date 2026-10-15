@@ -69,61 +69,68 @@ export function CsvImportModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/40 backdrop-blur-xs animate-fade-in">
-      <div className="w-full max-w-xl rounded-2xl bg-white border border-slate-200 p-4 sm:p-6 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-900/40 backdrop-blur-xs animate-fade-in">
+      <div className="w-full max-w-xl rounded-t-3xl sm:rounded-2xl bg-white border border-slate-200 p-4 sm:p-6 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto">
         
+        {/* Mobile Pull Handle Indicator */}
+        <div className="w-12 h-1.5 bg-slate-300 rounded-full mx-auto sm:hidden mb-1" />
+
         {/* Header */}
-        <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div className="flex items-center justify-between pb-2 border-b border-slate-100">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-[#013695]/10 border border-[#013695]/20 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-xl bg-[#013695]/10 border border-[#013695]/20 flex items-center justify-center shrink-0">
               <Upload className="w-4 h-4 text-[#013695]" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-slate-900">Uvoz popisa gostiju</h3>
-              <p className="text-[11px] text-slate-500">Direktan uvoz iz Google Sheetsa ili CSV-a</p>
+              <h3 className="text-base sm:text-lg font-bold text-slate-900 leading-none">Uvoz popisa gostiju</h3>
+              <p className="text-[11px] text-slate-500 mt-0.5">Direktan uvoz iz Google Sheetsa ili CSV-a</p>
             </div>
           </div>
-          <button onClick={onClose} className="p-1 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100">
+          <button
+            onClick={onClose}
+            className="w-10 h-10 rounded-xl flex items-center justify-center text-slate-400 hover:text-slate-700 hover:bg-slate-100 active:bg-slate-200 transition-colors"
+            aria-label="Zatvori"
+          >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Source Tab Selector */}
-        <div className="flex p-1 rounded-xl bg-slate-100 border border-slate-200 text-xs">
+        {/* Source Tab Selector - 48px height touch target */}
+        <div className="grid grid-cols-3 p-1 rounded-2xl bg-slate-100 border border-slate-200 text-xs sm:text-sm h-12">
           <button
             type="button"
             onClick={() => setActiveTab('url')}
-            className={`flex-1 py-2 px-3 rounded-lg font-bold flex items-center justify-center gap-1.5 transition-all ${
+            className={`h-full rounded-xl font-bold flex items-center justify-center gap-1.5 transition-all active:scale-95 ${
               activeTab === 'url'
                 ? 'bg-white text-slate-900 shadow-xs'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
-            <Link2 className="w-3.5 h-3.5 text-[#FC661B]" />
-            <span>Google Sheets link</span>
+            <Link2 className="w-4 h-4 text-[#FC661B]" />
+            <span className="truncate">Google Sheets</span>
           </button>
           <button
             type="button"
             onClick={() => setActiveTab('file')}
-            className={`flex-1 py-2 px-3 rounded-lg font-bold flex items-center justify-center gap-1.5 transition-all ${
+            className={`h-full rounded-xl font-bold flex items-center justify-center gap-1.5 transition-all active:scale-95 ${
               activeTab === 'file'
                 ? 'bg-white text-slate-900 shadow-xs'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
-            <FileText className="w-3.5 h-3.5 text-[#013695]" />
-            <span>CSV Datoteka</span>
+            <FileText className="w-4 h-4 text-[#013695]" />
+            <span className="truncate">CSV Datoteka</span>
           </button>
           <button
             type="button"
             onClick={() => setActiveTab('paste')}
-            className={`flex-1 py-2 px-3 rounded-lg font-bold flex items-center justify-center gap-1.5 transition-all ${
+            className={`h-full rounded-xl font-bold flex items-center justify-center gap-1.5 transition-all active:scale-95 ${
               activeTab === 'paste'
                 ? 'bg-white text-slate-900 shadow-xs'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
-            <span>Zalijepi tekst</span>
+            <span className="truncate">Zalijepi</span>
           </button>
         </div>
 
@@ -139,9 +146,9 @@ export function CsvImportModal({
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
                 placeholder="https://docs.google.com/spreadsheets/d/1ly1Okwx_HDb41s4PGGBd6ZQfs10pyw8lab9rDMxCbI8/edit"
-                className="w-full h-11 px-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-900 placeholder-slate-400 outline-none focus:border-[#FC661B]"
+                className="w-full h-12 px-3.5 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-900 placeholder-slate-400 outline-none focus:border-[#FC661B] focus:bg-white transition-all shadow-xs"
               />
-              <p className="text-[11px] text-slate-500 mt-1.5">
+              <p className="text-[11px] text-slate-500 mt-1.5 leading-relaxed">
                 💡 <strong>Savjet:</strong> Tablica mora imati uključeno <em>"Anyone with the link can view"</em>. Aplikacija sama automatski preuzima CSV export i stupce.
               </p>
             </div>
@@ -149,10 +156,10 @@ export function CsvImportModal({
             <button
               type="button"
               onClick={() => setUrl('https://docs.google.com/spreadsheets/d/1ly1Okwx_HDb41s4PGGBd6ZQfs10pyw8lab9rDMxCbI8/edit')}
-              className="text-[11px] font-semibold text-[#013695] hover:underline flex items-center gap-1"
+              className="h-10 px-3 rounded-xl bg-blue-50 border border-blue-200/80 text-xs font-bold text-[#013695] hover:bg-blue-100 flex items-center gap-1.5 transition-all active:scale-95"
             >
-              <Sparkles className="w-3 h-3 text-[#FC661B]" />
-              Postavi tvoju tablicu (POOR DECISIONS guest lista)
+              <Sparkles className="w-3.5 h-3.5 text-[#FC661B]" />
+              <span>Postavi zadanu tablicu (POOR DECISIONS guest lista)</span>
             </button>
           </div>
         )}
@@ -160,24 +167,24 @@ export function CsvImportModal({
         {/* Tab 2: File upload */}
         {activeTab === 'file' && (
           <div className="space-y-3">
-            <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-3 text-xs">
+            <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-3 text-xs">
               <div>
-                <p className="font-semibold text-slate-800">Preuzmi predložak:</p>
+                <p className="font-bold text-slate-800">Preuzmi predložak:</p>
                 <p className="text-[11px] text-slate-500">CSV sa stupcima za ime, kategoriju i stol.</p>
               </div>
               <a
                 href="/api/export/template"
                 download
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white hover:bg-slate-100 text-[#013695] border border-slate-200 font-semibold shrink-0 transition-colors shadow-xs"
+                className="inline-flex items-center gap-1.5 h-10 px-4 rounded-xl bg-white hover:bg-slate-100 text-[#013695] border border-slate-200 font-bold shrink-0 transition-colors shadow-xs active:scale-95"
               >
-                <Download className="w-3.5 h-3.5" />
-                Predložak
+                <Download className="w-4 h-4" />
+                <span>Predložak</span>
               </a>
             </div>
 
-            <label className="border-2 border-dashed border-slate-300 hover:border-slate-400 rounded-xl p-5 flex flex-col items-center justify-center gap-2 cursor-pointer bg-slate-50 hover:bg-slate-100/70 transition-colors">
+            <label className="border-2 border-dashed border-slate-300 hover:border-slate-400 rounded-2xl p-6 flex flex-col items-center justify-center gap-2 cursor-pointer bg-slate-50 hover:bg-slate-100/70 transition-colors active:scale-[0.99]">
               <FileText className="w-8 h-8 text-slate-400" />
-              <span className="text-xs font-semibold text-slate-700">
+              <span className="text-xs sm:text-sm font-bold text-slate-700 text-center">
                 {fileName ? fileName : 'Klikni ovdje za odabir .csv datoteke'}
               </span>
               <input
@@ -201,7 +208,7 @@ export function CsvImportModal({
               onChange={(e) => setCsvText(e.target.value)}
               rows={4}
               placeholder="Ime i prezime,Rezervacija preko,Ulaznica,Stol,Napomena&#10;Pero Perić,Ela,Plaća,Stol 1,&#10;Maja Majić,Dupli,Gratis,Stol 2,VIP"
-              className="w-full p-2.5 rounded-xl bg-slate-50 border border-slate-200 font-mono text-[11px] text-slate-900 placeholder-slate-400 outline-none focus:border-blue-500 resize-none"
+              className="w-full p-3 rounded-xl bg-slate-50 border border-slate-200 font-mono text-xs text-slate-900 placeholder-slate-400 outline-none focus:border-blue-500 resize-none"
             />
           </div>
         )}
@@ -215,9 +222,9 @@ export function CsvImportModal({
             <button
               type="button"
               onClick={() => setMode('append')}
-              className={`p-2.5 rounded-xl border text-left transition-all ${
+              className={`p-3 rounded-2xl border text-left transition-all active:scale-98 ${
                 mode === 'append'
-                  ? 'bg-blue-50 text-blue-900 border-blue-300 shadow-xs'
+                  ? 'bg-blue-50 text-blue-900 border-blue-300 shadow-xs ring-1 ring-blue-500/20'
                   : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'
               }`}
             >
@@ -227,9 +234,9 @@ export function CsvImportModal({
             <button
               type="button"
               onClick={() => setMode('replace')}
-              className={`p-2.5 rounded-xl border text-left transition-all ${
+              className={`p-3 rounded-2xl border text-left transition-all active:scale-98 ${
                 mode === 'replace'
-                  ? 'bg-red-50 text-red-900 border-red-300 shadow-xs'
+                  ? 'bg-red-50 text-red-900 border-red-300 shadow-xs ring-1 ring-red-500/20'
                   : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'
               }`}
             >
@@ -241,24 +248,24 @@ export function CsvImportModal({
 
         {/* Error / Success messages */}
         {error && (
-          <div className="p-2.5 rounded-lg bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-1.5">
+          <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2">
             <AlertCircle className="w-4 h-4 shrink-0 text-red-600" />
             <span>{error}</span>
           </div>
         )}
         {successMsg && (
-          <div className="p-2.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex items-center gap-1.5">
+          <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex items-center gap-2">
             <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />
             <span>{successMsg}</span>
           </div>
         )}
 
         {/* Action Button */}
-        <div className="pt-2 border-t border-slate-100 flex items-center justify-end gap-2">
+        <div className="pt-2 border-t border-slate-100 flex items-center justify-end gap-2.5">
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2.5 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 text-xs font-semibold"
+            className="h-12 px-5 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 text-xs sm:text-sm font-bold transition-all active:scale-95"
           >
             Odustani
           </button>
@@ -266,9 +273,9 @@ export function CsvImportModal({
             type="button"
             disabled={isSubmitting}
             onClick={handleConfirmImport}
-            className="px-5 py-2.5 rounded-xl bg-[#FC661B] hover:bg-[#e5530b] disabled:opacity-50 text-white text-xs font-bold shadow-md shadow-[#FC661B]/25 transition-all flex items-center gap-1.5"
+            className="h-12 px-6 rounded-xl bg-[#FC661B] hover:bg-[#e5530b] disabled:opacity-50 text-white text-xs sm:text-sm font-extrabold shadow-md shadow-[#FC661B]/25 transition-all flex items-center gap-2 active:scale-95"
           >
-            <Upload className="w-3.5 h-3.5" />
+            <Upload className="w-4 h-4 stroke-[2.5]" />
             <span>
               {isSubmitting
                 ? 'Učitavam s linka...'

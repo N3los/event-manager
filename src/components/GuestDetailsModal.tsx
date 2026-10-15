@@ -153,7 +153,7 @@ export function GuestDetailsModal({
               <button
                 type="button"
                 onClick={() => setIsEditing(true)}
-                className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 text-xs font-bold flex items-center gap-1.5 transition-colors"
+                className="h-10 px-3.5 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 text-xs font-bold flex items-center gap-1.5 transition-colors active:scale-95"
               >
                 <Edit2 className="w-3.5 h-3.5 text-[#FC661B]" />
                 <span>Uredi</span>
@@ -170,7 +170,7 @@ export function GuestDetailsModal({
                   setNote(guest.note || '');
                   setIsEditing(false);
                 }}
-                className="text-xs text-slate-500 hover:text-slate-800 underline mr-1 font-semibold"
+                className="h-10 px-3 text-xs text-slate-500 hover:text-slate-800 underline font-semibold flex items-center"
               >
                 Odustani
               </button>
@@ -178,7 +178,8 @@ export function GuestDetailsModal({
 
             <button
               onClick={onClose}
-              className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100"
+              className="w-10 h-10 rounded-xl flex items-center justify-center text-slate-400 hover:text-slate-700 hover:bg-slate-100 active:bg-slate-200 transition-colors"
+              aria-label="Zatvori"
             >
               <X className="w-5 h-5" />
             </button>
@@ -186,14 +187,14 @@ export function GuestDetailsModal({
         </div>
 
         {/* Status Callout Banner */}
-        <div className={`p-3 rounded-xl border flex items-center justify-between ${
+        <div className={`p-3.5 rounded-2xl border flex items-center justify-between ${
           guest.is_checked_in
             ? 'bg-emerald-50 border-emerald-200 text-emerald-900'
             : 'bg-amber-50 border-amber-200 text-amber-900'
         }`}>
-          <div className="flex items-center gap-2 text-xs">
+          <div className="flex items-center gap-2.5 text-xs sm:text-sm">
             {guest.is_checked_in ? (
-              <Check className="w-4 h-4 shrink-0 font-bold text-emerald-600" />
+              <Check className="w-4 h-4 shrink-0 font-bold text-emerald-600 stroke-[3]" />
             ) : (
               <Clock className="w-4 h-4 shrink-0 text-amber-600" />
             )}
@@ -208,13 +209,13 @@ export function GuestDetailsModal({
               )}
             </div>
           </div>
-          <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-white/80 border border-slate-200 text-slate-700">
+          <span className="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-white/90 border border-slate-200 text-slate-700 shadow-2xs">
             {reservationStatus === 'potvrdjeno' ? 'Potvrđeno' : 'Na čekanju'}
           </span>
         </div>
 
         {/* Form Body - Structured identical to Novi Gost, Pre-populated! */}
-        <div className="space-y-3.5">
+        <div className="space-y-4">
           
           {/* Ime i prezime - in edit mode editable */}
           {isEditing && (
@@ -226,13 +227,13 @@ export function GuestDetailsModal({
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full h-11 px-3.5 rounded-xl bg-white border border-blue-600 text-sm font-bold text-slate-900 outline-none shadow-xs"
+                className="w-full h-12 px-3.5 rounded-xl bg-white border border-blue-600 text-base font-bold text-slate-900 outline-none shadow-xs"
                 autoFocus
               />
             </div>
           )}
 
-          {/* Team selector pills (Preko koga dolazi) */}
+          {/* Team selector pills (Preko koga dolazi) - Touch-friendly 44-48px targets */}
           <div>
             <label className="block text-xs font-semibold text-slate-700 mb-1.5 flex items-center justify-between">
               <span className="flex items-center gap-1">
@@ -240,17 +241,19 @@ export function GuestDetailsModal({
                 Kategorija / Preko koga dolazi:
               </span>
               {team !== guest.team && (
-                <span className="text-[10px] text-amber-600 font-bold">Promijenjeno</span>
+                <span className="text-[10px] text-amber-600 font-bold bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200">
+                  Promijenjeno
+                </span>
               )}
             </label>
-            <div className="grid grid-cols-5 gap-1.5 text-xs">
+            <div className="grid grid-cols-5 gap-1.5">
               {(['Regularni', 'Ela', 'Joe', 'Dupli', 'Silvaši'] as TeamType[]).map((t) => (
                 <button
                   key={t}
                   type="button"
                   disabled={guest.is_checked_in && !isEditing}
                   onClick={() => handleTeamChange(t)}
-                  className={`py-2 px-1 rounded-xl font-bold border transition-all text-center ${
+                  className={`min-h-[44px] sm:min-h-[48px] px-1 py-1 rounded-xl text-[11px] sm:text-xs font-bold leading-tight flex items-center justify-center text-center border transition-all active:scale-95 ${
                     team === t
                       ? 'bg-[#013695] text-white border-[#024ec4] shadow-md shadow-[#013695]/20'
                       : 'bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200 hover:text-slate-900'
@@ -262,38 +265,40 @@ export function GuestDetailsModal({
             </div>
           </div>
 
-          {/* Ticket Type Toggle */}
+          {/* Ticket Type Toggle - Touch-friendly 48-52px */}
           <div>
             <label className="block text-xs font-semibold text-slate-700 mb-1.5 flex items-center justify-between">
               <span>Vrsta ulaznice:</span>
               {ticketType !== guest.ticket_type && (
-                <span className="text-[10px] text-amber-600 font-bold">Promijenjeno</span>
+                <span className="text-[10px] text-amber-600 font-bold bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200">
+                  Promijenjeno
+                </span>
               )}
             </label>
-            <div className="grid grid-cols-2 gap-2 text-xs">
+            <div className="grid grid-cols-2 gap-2 text-xs sm:text-sm">
               <button
                 type="button"
                 disabled={guest.is_checked_in && !isEditing}
                 onClick={() => setTicketType('placa')}
-                className={`py-2.5 px-3 rounded-xl font-bold border flex items-center justify-center gap-1.5 transition-all ${
+                className={`h-12 sm:h-13 px-3 rounded-2xl font-bold border flex items-center justify-center gap-1.5 transition-all active:scale-[0.98] ${
                   ticketType === 'placa'
                     ? 'bg-emerald-600 text-white border-emerald-700 shadow-sm'
                     : 'bg-slate-100 text-slate-600 border-slate-200 hover:bg-slate-200'
                 } ${guest.is_checked_in && !isEditing ? 'opacity-70 cursor-default' : ''}`}
               >
-                <span>Plaća 39 € (Ulaznica)</span>
+                <span>Plaća 39 €</span>
               </button>
               <button
                 type="button"
                 disabled={guest.is_checked_in && !isEditing}
                 onClick={() => setTicketType('gratis')}
-                className={`py-2.5 px-3 rounded-xl font-bold border flex items-center justify-center gap-1.5 transition-all ${
+                className={`h-12 sm:h-13 px-3 rounded-2xl font-bold border flex items-center justify-center gap-1.5 transition-all active:scale-[0.98] ${
                   ticketType === 'gratis'
                     ? 'bg-[#013695] text-white border-[#024ec4] shadow-sm'
                     : 'bg-slate-100 text-slate-600 border-slate-200 hover:bg-slate-200'
                 } ${guest.is_checked_in && !isEditing ? 'opacity-70 cursor-default' : ''}`}
               >
-                <span>Gratis 0 € (Besplatno)</span>
+                <span>Gratis 0 €</span>
               </button>
             </div>
           </div>
@@ -313,7 +318,7 @@ export function GuestDetailsModal({
                     value={tableName}
                     onChange={(e) => setTableName(e.target.value)}
                     placeholder="npr. Stol 1"
-                    className="w-full h-10 px-3 rounded-xl bg-white border border-slate-300 text-xs text-slate-900 placeholder-slate-400 outline-none focus:border-[#013695]"
+                    className="w-full h-11 sm:h-12 px-3.5 rounded-xl bg-white border border-slate-300 text-sm text-slate-900 placeholder-slate-400 outline-none focus:border-[#013695]"
                   />
                   <datalist id="modal-table-options">
                     {existingTables.map((t) => (
@@ -322,8 +327,8 @@ export function GuestDetailsModal({
                   </datalist>
                 </>
               ) : (
-                <div className="h-10 px-3 rounded-xl bg-slate-100 border border-slate-200 flex items-center">
-                  <span className="text-xs font-bold text-[#FC661B]">
+                <div className="h-11 sm:h-12 px-3.5 rounded-xl bg-slate-100 border border-slate-200 flex items-center">
+                  <span className="text-xs sm:text-sm font-bold text-[#FC661B]">
                     {tableName || 'Bez stola (Stajanje)'}
                   </span>
                 </div>
@@ -341,11 +346,11 @@ export function GuestDetailsModal({
                   value={note}
                   onChange={(e) => setNote(e.target.value)}
                   placeholder="npr. Fotograf, popust..."
-                  className="w-full h-10 px-3 rounded-xl bg-white border border-slate-300 text-xs text-slate-900 placeholder-slate-400 outline-none focus:border-[#013695]"
+                  className="w-full h-11 sm:h-12 px-3.5 rounded-xl bg-white border border-slate-300 text-sm text-slate-900 placeholder-slate-400 outline-none focus:border-[#013695]"
                 />
               ) : (
-                <div className="h-10 px-3 rounded-xl bg-slate-100 border border-slate-200 flex items-center truncate">
-                  <span className="text-xs italic text-slate-700 truncate">
+                <div className="h-11 sm:h-12 px-3.5 rounded-xl bg-slate-100 border border-slate-200 flex items-center truncate">
+                  <span className="text-xs sm:text-sm italic text-slate-700 truncate">
                     {note || 'Nema napomene'}
                   </span>
                 </div>
@@ -362,7 +367,7 @@ export function GuestDetailsModal({
               <select
                 value={reservationStatus}
                 onChange={(e) => setReservationStatus(e.target.value as ReservationStatus)}
-                className="w-full h-10 px-3 rounded-xl bg-white border border-slate-300 text-xs text-slate-900 outline-none focus:border-[#013695]"
+                className="w-full h-11 sm:h-12 px-3.5 rounded-xl bg-white border border-slate-300 text-sm text-slate-900 outline-none focus:border-[#013695]"
               >
                 <option value="potvrdjeno">Potvrđeno</option>
                 <option value="na_cekanju">Na čekanju</option>
@@ -381,25 +386,25 @@ export function GuestDetailsModal({
                 <button
                   type="button"
                   onClick={() => setShowDeleteConfirm(true)}
-                  className="h-11 px-3.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-xs font-bold flex items-center gap-1.5 transition-colors"
+                  className="h-12 px-4 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-xs font-bold flex items-center gap-1.5 transition-colors active:scale-95"
                 >
                   <Trash2 className="w-4 h-4" />
-                  <span>Obriši gosta</span>
+                  <span>Obriši</span>
                 </button>
               ) : (
-                <div className="flex items-center gap-1.5">
+                <div className="flex items-center gap-2">
                   <button
                     type="button"
                     onClick={handleDelete}
                     disabled={isSubmitting}
-                    className="h-11 px-3 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs"
+                    className="h-12 px-4 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs active:scale-95 transition-all"
                   >
                     Potvrdi brisanje
                   </button>
                   <button
                     type="button"
                     onClick={() => setShowDeleteConfirm(false)}
-                    className="h-11 px-2.5 rounded-xl bg-slate-200 text-slate-700 text-xs font-semibold"
+                    className="h-12 px-3.5 rounded-xl bg-slate-200 text-slate-700 text-xs font-semibold active:scale-95 transition-all"
                   >
                     Odustani
                   </button>
@@ -410,7 +415,7 @@ export function GuestDetailsModal({
                 type="button"
                 disabled={isSubmitting || !name.trim()}
                 onClick={handleSaveEdit}
-                className="flex-1 max-w-[200px] h-11 px-4 rounded-xl bg-[#013695] hover:bg-[#024ec4] disabled:opacity-50 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md shadow-[#013695]/20 transition-all active:scale-[0.98]"
+                className="flex-1 max-w-[220px] h-12 px-4 rounded-xl bg-[#013695] hover:bg-[#024ec4] disabled:opacity-50 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md shadow-[#013695]/20 transition-all active:scale-[0.98]"
               >
                 <Save className="w-4 h-4" />
                 <span>{isSubmitting ? 'Spremam...' : 'Spremi promjene'}</span>
@@ -451,8 +456,8 @@ export function GuestDetailsModal({
                       <span>VRATI GOSTA / PONIŠTI DOLAZAK (STORNO)</span>
                     </button>
                   ) : (
-                    <div className="p-3 rounded-xl bg-red-50 border border-red-200 space-y-2 text-center animate-fade-in">
-                      <p className="text-xs font-bold text-red-800">
+                    <div className="p-3.5 rounded-2xl bg-red-50 border border-red-200 space-y-2.5 text-center animate-fade-in">
+                      <p className="text-xs sm:text-sm font-bold text-red-800">
                         Sigurno želiš poništiti dolazak i stornirati narukvicu?
                       </p>
                       <div className="flex gap-2">
@@ -460,14 +465,14 @@ export function GuestDetailsModal({
                           type="button"
                           disabled={isSubmitting}
                           onClick={handleConfirmUndo}
-                          className="flex-1 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs transition-colors"
+                          className="flex-1 h-12 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm transition-all active:scale-95"
                         >
                           {isSubmitting ? 'Poništavam...' : 'Da, storniraj'}
                         </button>
                         <button
                           type="button"
                           onClick={() => setShowUndoConfirm(false)}
-                          className="flex-1 py-2.5 rounded-xl bg-slate-200 text-slate-700 font-semibold text-xs transition-colors"
+                          className="flex-1 h-12 rounded-xl bg-slate-200 text-slate-700 font-semibold text-xs sm:text-sm transition-all active:scale-95"
                         >
                           Odustani
                         </button>

@@ -76,41 +76,47 @@ export function TablesView({ guests, onCheckIn }: TablesViewProps) {
               </div>
 
               {/* Guests List for Table */}
-              <ul className="space-y-1.5 text-xs">
+              <ul className="space-y-2 text-xs">
                 {table.guests.map((g) => (
                   <li
                     key={g.id}
-                    className={`flex items-center justify-between p-2 rounded-lg border transition-all ${
+                    className={`flex items-center justify-between p-3 sm:p-3.5 rounded-xl border transition-all min-h-[56px] ${
                       g.is_checked_in
-                        ? 'bg-emerald-50/80 border-emerald-200 text-emerald-950'
-                        : 'bg-slate-50 border-slate-200 text-slate-800'
+                        ? 'bg-emerald-50/70 border-emerald-200/80 text-emerald-950'
+                        : 'bg-slate-50 border-slate-200 text-slate-800 hover:border-slate-300'
                     }`}
                   >
-                    <div className="min-w-0 flex-1 mr-2">
-                      <div className="flex items-center gap-1.5">
-                        <span className="font-semibold truncate">{g.name}</span>
-                        {g.ticket_type === 'gratis' && (
-                          <span className="text-[10px] px-1.5 py-0.2 rounded bg-blue-100 text-blue-700 font-semibold border border-blue-200">
+                    <div className="min-w-0 flex-1 mr-2.5">
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        <span className="font-bold text-sm sm:text-base truncate">{g.name}</span>
+                        {g.ticket_type === 'gratis' ? (
+                          <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-blue-100 text-blue-700 font-bold border border-blue-200">
                             Gratis
+                          </span>
+                        ) : (
+                          <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-emerald-100 text-emerald-700 font-bold border border-emerald-200">
+                            39 €
                           </span>
                         )}
                       </div>
                       {g.note && (
-                        <p className="text-[10px] text-amber-700 font-medium italic truncate">💬 {g.note}</p>
+                        <p className="text-[11px] text-amber-800 font-medium italic truncate mt-0.5">💬 {g.note}</p>
                       )}
                     </div>
 
                     {g.is_checked_in ? (
-                      <span className="shrink-0 flex items-center gap-1 text-[11px] font-bold text-emerald-700">
-                        <Check className="w-3.5 h-3.5 text-emerald-600" />
-                        U dvorani
+                      <span className="shrink-0 flex items-center gap-1.5 text-xs font-bold text-emerald-700 bg-emerald-100/80 px-3 py-2 rounded-xl border border-emerald-200">
+                        <Check className="w-4 h-4 text-emerald-600 stroke-[3]" />
+                        <span>U dvorani</span>
                       </span>
                     ) : (
                       <button
+                        type="button"
                         onClick={() => onCheckIn(g.id)}
-                        className="shrink-0 px-2.5 py-1 rounded-md bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-bold transition-colors shadow-xs"
+                        className="shrink-0 h-11 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-extrabold transition-all shadow-md shadow-emerald-600/20 active:scale-95 flex items-center gap-1.5"
                       >
-                        Potvrdi ulaz
+                        <Check className="w-4 h-4 stroke-[3]" />
+                        <span>Potvrdi ulaz</span>
                       </button>
                     )}
                   </li>

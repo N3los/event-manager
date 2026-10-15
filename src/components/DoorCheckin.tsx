@@ -90,7 +90,7 @@ export function DoorCheckin({
       
       {/* Sticky Search & Filter Header */}
       <div className="sticky top-[52px] sm:top-[60px] z-20 pb-2.5 bg-slate-50/95 backdrop-blur-md pt-1">
-        {/* Search Input Bar */}
+        {/* Search Input Bar - 48px touch height */}
         <div className="relative">
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
           <input
@@ -98,33 +98,34 @@ export function DoorCheckin({
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Pretraži gosta, stol ili napomenu..."
-            className="w-full h-11 pl-10 pr-10 rounded-2xl bg-white border border-slate-200 focus:border-[#013695] focus:ring-2 focus:ring-[#013695]/10 text-sm text-slate-900 placeholder-slate-400 outline-none transition-all shadow-xs"
+            className="w-full h-12 pl-10 pr-11 rounded-2xl bg-white border border-slate-200 focus:border-[#013695] focus:ring-2 focus:ring-[#013695]/10 text-sm text-slate-900 placeholder-slate-400 outline-none transition-all shadow-xs"
             autoFocus
           />
           {search && (
             <button
               onClick={() => setSearch('')}
-              className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-slate-700"
+              className="absolute right-1.5 top-1/2 -translate-y-1/2 w-10 h-10 rounded-xl flex items-center justify-center text-slate-400 hover:text-slate-700 active:bg-slate-100 transition-colors"
+              aria-label="Očisti pretragu"
             >
               <X className="w-4 h-4" />
             </button>
           )}
         </div>
 
-        {/* Primary Segmented Status Control */}
-        <div className="grid grid-cols-3 p-1 rounded-xl bg-slate-200/70 text-xs font-bold text-slate-600 mt-2.5 shadow-inner">
+        {/* Primary Segmented Status Control - Touch-optimized (48px height) */}
+        <div className="grid grid-cols-3 p-1 rounded-2xl bg-slate-200/80 text-xs sm:text-sm font-bold text-slate-600 mt-2.5 shadow-inner h-12">
           <button
             type="button"
             onClick={() => setStatusFilter('pending')}
-            className={`py-1.5 px-2 rounded-lg flex items-center justify-center gap-1.5 transition-all ${
+            className={`h-full rounded-xl flex items-center justify-center gap-1.5 sm:gap-2 transition-all active:scale-[0.97] ${
               statusFilter === 'pending'
                 ? 'bg-white text-slate-900 shadow-xs'
                 : 'hover:text-slate-900'
             }`}
           >
             <span>Na ulazu</span>
-            <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${
-              statusFilter === 'pending' ? 'bg-[#FC661B] text-white' : 'bg-slate-300 text-slate-700'
+            <span className={`text-[11px] px-2 py-0.5 rounded-full font-extrabold ${
+              statusFilter === 'pending' ? 'bg-[#FC661B] text-white shadow-xs' : 'bg-slate-300 text-slate-700'
             }`}>
               {pendingCount}
             </span>
@@ -133,15 +134,15 @@ export function DoorCheckin({
           <button
             type="button"
             onClick={() => setStatusFilter('checked_in')}
-            className={`py-1.5 px-2 rounded-lg flex items-center justify-center gap-1.5 transition-all ${
+            className={`h-full rounded-xl flex items-center justify-center gap-1.5 sm:gap-2 transition-all active:scale-[0.97] ${
               statusFilter === 'checked_in'
                 ? 'bg-white text-slate-900 shadow-xs'
                 : 'hover:text-slate-900'
             }`}
           >
             <span>U dvorani</span>
-            <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${
-              statusFilter === 'checked_in' ? 'bg-emerald-600 text-white' : 'bg-slate-300 text-slate-700'
+            <span className={`text-[11px] px-2 py-0.5 rounded-full font-extrabold ${
+              statusFilter === 'checked_in' ? 'bg-emerald-600 text-white shadow-xs' : 'bg-slate-300 text-slate-700'
             }`}>
               {checkedInCount}
             </span>
@@ -150,32 +151,32 @@ export function DoorCheckin({
           <button
             type="button"
             onClick={() => setStatusFilter('all')}
-            className={`py-1.5 px-2 rounded-lg flex items-center justify-center gap-1.5 transition-all ${
+            className={`h-full rounded-xl flex items-center justify-center gap-1.5 sm:gap-2 transition-all active:scale-[0.97] ${
               statusFilter === 'all'
                 ? 'bg-white text-slate-900 shadow-xs'
                 : 'hover:text-slate-900'
             }`}
           >
             <span>Svi</span>
-            <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${
-              statusFilter === 'all' ? 'bg-[#013695] text-white' : 'bg-slate-300 text-slate-700'
+            <span className={`text-[11px] px-2 py-0.5 rounded-full font-extrabold ${
+              statusFilter === 'all' ? 'bg-[#013695] text-white shadow-xs' : 'bg-slate-300 text-slate-700'
             }`}>
               {guests.length}
             </span>
           </button>
         </div>
 
-        {/* Secondary Sub-filters: Ticket & Table */}
-        <div className="flex items-center justify-between gap-2 mt-2 px-0.5 text-xs">
+        {/* Secondary Sub-filters: Ticket & Table with comfortable touch targets (40-44px) */}
+        <div className="flex flex-wrap sm:flex-nowrap items-center justify-between gap-2 mt-2 px-0.5">
           {/* Ticket Type Chips */}
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1.5 flex-1 min-w-0">
             <button
               type="button"
               onClick={() => setTicketFilter('all')}
-              className={`px-2 py-1 rounded-lg text-[11px] font-semibold transition-all ${
+              className={`flex-1 sm:flex-none h-10 sm:h-11 px-3 sm:px-3.5 rounded-xl text-xs font-bold transition-all active:scale-95 flex items-center justify-center ${
                 ticketFilter === 'all'
-                  ? 'bg-slate-800 text-white'
-                  : 'text-slate-500 hover:text-slate-900 hover:bg-slate-200/60'
+                  ? 'bg-slate-800 text-white shadow-xs'
+                  : 'text-slate-600 hover:text-slate-900 bg-white border border-slate-200/90 shadow-2xs'
               }`}
             >
               Sve karte
@@ -183,24 +184,30 @@ export function DoorCheckin({
             <button
               type="button"
               onClick={() => setTicketFilter(ticketFilter === 'placa' ? 'all' : 'placa')}
-              className={`px-2 py-1 rounded-lg text-[11px] font-semibold transition-all ${
+              className={`flex-1 sm:flex-none h-10 sm:h-11 px-3 sm:px-3.5 rounded-xl text-xs font-bold transition-all active:scale-95 flex items-center justify-center gap-1.5 ${
                 ticketFilter === 'placa'
                   ? 'bg-emerald-600 text-white shadow-xs'
-                  : 'text-slate-500 hover:text-emerald-700 hover:bg-emerald-50'
+                  : 'text-slate-700 hover:text-emerald-700 bg-white border border-slate-200/90 shadow-2xs'
               }`}
             >
-              39 € ({paidCount})
+              <span>39 €</span>
+              <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-extrabold ${ticketFilter === 'placa' ? 'bg-emerald-700 text-white' : 'bg-slate-100 text-slate-700 border border-slate-200'}`}>
+                {paidCount}
+              </span>
             </button>
             <button
               type="button"
               onClick={() => setTicketFilter(ticketFilter === 'gratis' ? 'all' : 'gratis')}
-              className={`px-2 py-1 rounded-lg text-[11px] font-semibold transition-all ${
+              className={`flex-1 sm:flex-none h-10 sm:h-11 px-3 sm:px-3.5 rounded-xl text-xs font-bold transition-all active:scale-95 flex items-center justify-center gap-1.5 ${
                 ticketFilter === 'gratis'
                   ? 'bg-blue-600 text-white shadow-xs'
-                  : 'text-slate-500 hover:text-blue-700 hover:bg-blue-50'
+                  : 'text-slate-700 hover:text-blue-700 bg-white border border-slate-200/90 shadow-2xs'
               }`}
             >
-              Gratis ({freeCount})
+              <span>Gratis</span>
+              <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-extrabold ${ticketFilter === 'gratis' ? 'bg-blue-700 text-white' : 'bg-slate-100 text-slate-700 border border-slate-200'}`}>
+                {freeCount}
+              </span>
             </button>
           </div>
 
@@ -209,7 +216,7 @@ export function DoorCheckin({
             <select
               value={selectedTable}
               onChange={(e) => setSelectedTable(e.target.value)}
-              className="text-[11px] font-semibold py-1 px-2 rounded-lg bg-white border border-slate-200 text-slate-700 outline-none hover:border-slate-300 shrink-0 shadow-xs"
+              className="h-10 sm:h-11 text-xs font-bold px-3 sm:px-3.5 rounded-xl bg-white border border-slate-200 text-slate-700 outline-none hover:border-slate-300 shadow-2xs cursor-pointer shrink-0 max-w-[150px] sm:max-w-none truncate"
             >
               <option value="all">Svi stolovi ({tables.length})</option>
               {tables.map((t) => (
@@ -231,7 +238,7 @@ export function DoorCheckin({
             </p>
             <button
               onClick={onOpenAddGuest}
-              className="mt-4 inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#FC661B] hover:bg-[#e5530b] text-white text-xs font-bold transition-all shadow-md shadow-[#FC661B]/20"
+              className="mt-4 inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#FC661B] hover:bg-[#e5530b] text-white text-xs font-bold transition-all shadow-md shadow-[#FC661B]/20"
             >
               <UserPlus className="w-4 h-4" />
               Dodaj gosta "{search || 'Novi'}"
@@ -242,7 +249,7 @@ export function DoorCheckin({
             <div
               key={guest.id}
               onClick={() => setSelectedGuestId(guest.id)}
-              className={`group cursor-pointer select-none rounded-xl border transition-all active:scale-[0.99] px-3.5 py-2.5 sm:py-3 flex items-center justify-between gap-3 ${
+              className={`group cursor-pointer select-none rounded-2xl border transition-all active:scale-[0.99] px-3.5 py-3 sm:py-3.5 flex items-center justify-between gap-3 min-h-[58px] ${
                 guest.is_checked_in
                   ? 'bg-slate-50/70 border-slate-200/70 hover:bg-slate-100/70'
                   : 'bg-white border-slate-200 hover:border-slate-300 hover:shadow-xs'
