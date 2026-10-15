@@ -358,8 +358,12 @@ export default function HomePage() {
           {/* Banner if guest list is empty */}
           {guests.length === 0 && !isLoading && (
             <div className="max-w-xl mx-auto my-8 p-6 rounded-2xl bg-white border border-slate-200 text-center space-y-4 shadow-sm">
-              <div className="w-12 h-12 rounded-2xl bg-[#013695]/10 border border-[#013695]/20 mx-auto flex items-center justify-center">
-                <Sparkles className="w-6 h-6 text-[#FC661B]" />
+              <div className="w-16 h-16 rounded-full overflow-hidden border border-slate-200 mx-auto shadow-xs bg-white">
+                <img
+                  src="/day_drinking_logo.jpeg"
+                  alt="Poor Decisions Day Drinking Society"
+                  className="w-full h-full object-cover"
+                />
               </div>
               <div>
                 <h2 className="text-base font-bold text-slate-900">Guest lista je prazna</h2>

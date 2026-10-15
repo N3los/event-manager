@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { FinancialStats } from '@/lib/types';
 import {
-  Sparkles, RefreshCw, SlidersHorizontal, ChevronDown,
+  RefreshCw, SlidersHorizontal, ChevronDown,
   Coins, Upload, Lock, Unlock, FileText, Check, ArrowRight, LogOut
 } from 'lucide-react';
 import Link from 'next/link';
@@ -48,8 +48,12 @@ export function Navbar({
         {/* Brand & Cash Counter */}
         <div className="flex items-center gap-2 sm:gap-3 min-w-0">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-xl bg-[#013695] border border-[#024ec4] flex items-center justify-center shadow-xs shrink-0">
-              <Sparkles className="w-4 h-4 text-[#FC661B]" />
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full overflow-hidden border border-slate-200 shadow-2xs shrink-0 bg-white">
+              <img
+                src="/day_drinking_logo.jpeg"
+                alt="Poor Decisions Day Drinking Society"
+                className="w-full h-full object-cover"
+              />
             </div>
             <h1 className="text-sm sm:text-base font-extrabold tracking-tight text-slate-900 leading-none truncate flex items-center gap-1.5">
               <span>POOR <br /> DECISIONS</span>
