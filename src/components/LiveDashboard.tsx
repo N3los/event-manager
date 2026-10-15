@@ -2,15 +2,16 @@
 
 import React, { useState } from 'react';
 import { FinancialStats, Guest } from '@/lib/types';
-import { Coins, ShieldCheck, FileText, Copy, Check } from 'lucide-react';
+import { Coins, ShieldCheck, FileText, Copy, Check, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
 interface LiveDashboardProps {
   stats: FinancialStats;
   guests: Guest[];
+  onBackToDoor?: () => void;
 }
 
-export function LiveDashboard({ stats, guests }: LiveDashboardProps) {
+export function LiveDashboard({ stats, guests, onBackToDoor }: LiveDashboardProps) {
   const [copied, setCopied] = useState(false);
 
   // Find who the free guests are for each team
@@ -45,8 +46,25 @@ export function LiveDashboard({ stats, guests }: LiveDashboardProps) {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-3 py-4 sm:px-4 sm:py-6 space-y-5 pb-28 sm:pb-32">
+    <div className="max-w-4xl mx-auto px-3 py-4 sm:px-4 sm:py-6 space-y-4 sm:space-y-5 pb-28 sm:pb-32">
       
+      {/* Top Navigation Back to Door */}
+      {onBackToDoor && (
+        <div className="flex items-center justify-between gap-3 bg-white p-2.5 sm:p-3 rounded-2xl border border-slate-200 shadow-2xs">
+          <button
+            type="button"
+            onClick={onBackToDoor}
+            className="inline-flex items-center gap-2 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs sm:text-sm shadow-sm active:scale-95 transition-all"
+          >
+            <ArrowLeft className="w-4 h-4 text-[#FC661B]" />
+            <span>Natrag na ulaz (Popis gostiju)</span>
+          </button>
+          <span className="text-xs text-slate-500 font-medium hidden sm:inline">
+            Završni obračun gotovine & timova
+          </span>
+        </div>
+      )}
+
       {/* Hero Cashbox Card */}
       <div className="rounded-3xl bg-gradient-to-br from-[#013695] via-[#0142b5] to-[#0250d4] text-white p-5 sm:p-7 shadow-xl shadow-[#013695]/15 border border-[#024ec4] relative overflow-hidden">
         <div className="absolute right-0 top-0 w-64 h-64 bg-white/10 rounded-full blur-3xl pointer-events-none" />

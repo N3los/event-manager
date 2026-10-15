@@ -411,7 +411,11 @@ export default function HomePage() {
 
           {/* Tab 3: Live Financial Dashboard */}
           {activeTab === 'dashboard' && stats && (
-            <LiveDashboard stats={stats} guests={guests} />
+            <LiveDashboard
+              stats={stats}
+              guests={guests}
+              onBackToDoor={() => setActiveTab('door')}
+            />
           )}
         </main>
 
