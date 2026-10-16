@@ -36,7 +36,10 @@ export function TablesView({ guests, onCheckIn }: TablesViewProps) {
   }, [guests]);
 
   return (
-    <div className="max-w-4xl mx-auto px-3 py-4 sm:px-4 sm:py-6 space-y-4 pb-safe">
+    <div 
+      className="max-w-4xl mx-auto px-3 py-4 sm:px-4 sm:py-6 space-y-4 pb-28 sm:pb-32"
+      style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 7.5rem)' }}
+    >
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-base font-bold text-slate-900 flex items-center gap-1.5">

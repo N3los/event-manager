@@ -107,8 +107,11 @@ export function BottomSheetWrapper({
 
       {/* Floating Modal / Bottom Sheet */}
       <motion.div
-        style={{ y }}
-        className={`w-full ${maxWidth} rounded-t-3xl sm:rounded-2xl bg-white border border-slate-200 p-4 sm:p-6 modal-bottom-safe shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto z-10 relative ${className}`}
+        style={{ 
+          y,
+          paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 1.25rem)',
+        }}
+        className={`w-full ${maxWidth} rounded-t-3xl sm:rounded-2xl bg-white border border-slate-200 p-4 sm:p-6 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto z-10 relative ${className}`}
       >
         {/* Generous Drag Notch Zone (touch-action: none prevents Android pull-to-refresh) */}
         <div

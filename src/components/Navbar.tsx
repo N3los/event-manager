@@ -55,7 +55,10 @@ export function Navbar({
   }, [isManageOpen]);
 
   return (
-    <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200 px-3 py-2 sm:px-6 relative shadow-xs pt-safe-nav">
+    <header 
+      className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200 px-3 py-2 sm:px-6 relative shadow-xs"
+      style={{ paddingTop: 'calc(env(safe-area-inset-top, 0px) + 0.5rem)' }}
+    >
 
       {/* Top subtle active loading progress line */}
       {isRefreshing && (

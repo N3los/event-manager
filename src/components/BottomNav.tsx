@@ -15,7 +15,10 @@ export function BottomNav({
   onOpenAddGuest,
 }: BottomNavProps) {
   return (
-    <div className="fixed bottom-safe-nav left-0 right-0 z-40 flex justify-center px-3 sm:px-4 pointer-events-none">
+    <div 
+      className="fixed bottom-3 sm:bottom-5 left-0 right-0 z-40 flex justify-center px-3 sm:px-4 pointer-events-none"
+      style={{ bottom: 'calc(env(safe-area-inset-bottom, 0px) + 0.75rem)' }}
+    >
       <nav 
         aria-label="Glavna navigacija"
         className="pointer-events-auto w-full max-w-md bg-white/95 backdrop-blur-xl border border-slate-200 p-1.5 rounded-2xl shadow-xl shadow-slate-300/40 flex items-center justify-between gap-1.5 ring-1 ring-slate-900/5"
